@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+wagtail = ">=2.13,<2.14"
+Django = ">=3.2,<3.3"
+python-decouple = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
