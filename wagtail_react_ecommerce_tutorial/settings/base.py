@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'taggit',
 
     # Wagtail additions:
+    'wagtail.contrib.modeladmin',
     'wagtail.api.v2',
 
     'django.contrib.admin',
