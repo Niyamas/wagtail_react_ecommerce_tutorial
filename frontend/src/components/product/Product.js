@@ -11,7 +11,7 @@ function Product({ product }) {
 
         <Card className="my-3 p-3 rounded">
             <Link to={`/product/${product.id}`}>
-                <Card.Img src={product.image} />
+                <Card.Img src={product.image.file} />
             </Link>
 
             <Card.Body>

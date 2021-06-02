@@ -198,4 +198,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 """django-cors-headers (https://pypi.org/project/django-cors-headers/)"""
+# Essential for API work.
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv())

@@ -29,6 +29,7 @@ class Review(models.Model):
         null=True,
     )
     comment = models.TextField(
+        max_length=2000,
         blank=True,
         null=True
     )

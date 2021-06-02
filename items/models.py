@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.deletion import SET_NULL
+from django.db.models.fields.files import ImageField
 from django.utils.text import slugify 
 
 from wagtail.core.models import Page
@@ -9,6 +11,7 @@ from wagtail.admin.edit_handlers import (
     MultiFieldPanel,
     InlinePanel,
 )
+from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.api import APIField
 from wagtail.snippets.models import register_snippet
 
@@ -30,8 +33,16 @@ class ItemDetailPage(Page):
         blank=True,
         null=True,
         on_delete=models.SET_NULL       # When deleting user, set this value to null
+
     )
-    #image = 
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        blank=True,
+        null=True,
+        related_name='+',
+        help_text='Sample help text. Change later yes',
+        on_delete=models.SET_NULL
+    )
     category = models.ForeignKey(
         'items.ItemCategory',
         blank=True,
@@ -45,6 +56,7 @@ class ItemDetailPage(Page):
     )
     description = RichTextField(
         features=['bold', 'italic'],
+        max_length=2000,
         blank=False,
         null=True
     )
@@ -75,6 +87,7 @@ class ItemDetailPage(Page):
         FieldPanel('user'),
         MultiFieldPanel(
             [
+                ImageChooserPanel('image'),
                 FieldPanel('category'),
                 FieldPanel('brand'),
                 FieldPanel('description'),
@@ -95,6 +108,7 @@ class ItemDetailPage(Page):
     # Export fields over the API
     api_fields = [
         APIField('user'),
+        APIField('image'),
         APIField('brand'),
         APIField('description'),
         APIField('price'),

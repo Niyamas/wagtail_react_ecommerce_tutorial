@@ -16,7 +16,7 @@ function HomeScreen() {
         async function fetchProducts() {
 
             // Use axios to update state
-            const { data } = await axios.get('http://localhost:8000/api/v1/products/')
+            const { data } = await axios.get('http://localhost:8000/api/v1/items/')
             setProducts(data)
         }
 
