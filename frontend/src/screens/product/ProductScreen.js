@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
+import axios from 'axios'
 
 import Rating from '../../components/product/Rating'
 import products from '../../products'
@@ -9,8 +10,23 @@ import './css/product_screen.css'
 
 function ProductScreen({ match }) {
 
-    // When going to a product page, get the product that matches the ID of the page with what's in the json/database
-    const product = products.find( (element) => element._id == match.params.id )
+    const [product, setProduct] = useState([])
+
+    // Use effect triggers when the component loads or a state updates (dictated by the empty array)
+    useEffect( () => {
+
+        // Async function to use await
+        async function fetchProducts() {
+
+            // Use axios to update state
+            const { data } = await axios.get(`http://localhost:8000/api/v1/products/${match.params.id}`)
+            setProduct(data)
+        }
+
+        // Call function to load all of the products in the API
+        fetchProducts()
+
+    }, [])
 
     return (
 

@@ -1,10 +1,29 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
+import axios from 'axios'
 
 import products from '../../products'
 import Product from '../../components/product/Product'
 
 function HomeScreen() {
+
+    const [products, setProducts] = useState([])
+
+    // Use effect triggers when the component loads or a state updates.
+    useEffect( () => {
+
+        // Async function to use await
+        async function fetchProducts() {
+
+            // Use axios to update state
+            const { data } = await axios.get('http://localhost:8000/api/v1/products/')
+            setProducts(data)
+        }
+
+        // Call function to load all of the products in the API
+        fetchProducts()
+
+    }, [])
 
     return (
 

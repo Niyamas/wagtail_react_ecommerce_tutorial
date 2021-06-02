@@ -16,6 +16,8 @@ urlpatterns = [
 
     path('search/', search_views.search, name='search'),
 
+    path('api/v1/', include('api.urls')),           # DRF urls
+
 ]
 
 
