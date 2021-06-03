@@ -11,22 +11,22 @@ function Product({ product }) {
 
         <Card className="my-3 p-3 rounded">
             <Link to={`/product/${product.id}`}>
-                <Card.Img src={product.image.file} />
+                <Card.Img src={product?.image?.file ?? ""} />
             </Link>
 
             <Card.Body>
                 <Link to={`/product/${product.id}`}>
                     <Card.Title as="div">
-                        <strong>{product.name}</strong>
+                        <strong>{product.title}</strong>
                     </Card.Title>
                 </Link>
 
                 <Card.Text as="div">
                     <div className="my-3">
-                        {product.rating} from {product.numReviews} reviews
+                        {product.rating} from {product.quantity_reviews} reviews
                     </div>
 
-                    <Rating value={product.rating} text={`${product.numReviews} reviews`} color={'#f8e825'} />
+                    <Rating value={product.rating} text={`${product.quantity_reviews} reviews`} color={'#f8e825'} />
                 </Card.Text>
 
                 <Card.Text as="h3">

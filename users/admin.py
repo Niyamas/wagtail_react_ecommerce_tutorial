@@ -17,7 +17,8 @@ class ReviewAdmin(ModelAdmin):
     """Registers the Review model in the Wagtail admin."""
 
     model = Review
-    menu_label = 'tick'
+    menu_label = 'Reviews'
+    menu_icon = 'tick'
     add_to_settings_menu = False
     exclude_from_explorer = False
     inspect_view_enabled = True
@@ -63,7 +64,7 @@ class ShippingAddressAdmin(ModelAdmin):
     """Registers the ShippingAddress model in the Wagtail admin."""
 
     model = ShippingAddress
-    menu_label = 'Shipping Address'
+    menu_label = 'Shipping Addresses'
     menu_icon = 'site'
     add_to_settings_menu = False
     exclude_from_explorer = False
