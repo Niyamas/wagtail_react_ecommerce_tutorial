@@ -9,6 +9,7 @@ Django = ">=3.2,<3.3"
 python-decouple = "*"
 psycopg2 = "*"
 django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

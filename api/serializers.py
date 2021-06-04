@@ -1,5 +1,11 @@
+from django.contrib.auth.models import User
+
+
 from rest_framework import serializers
 from rest_framework.relations import PrimaryKeyRelatedField
+
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from wagtail.search import queryset
 
 from users.models import (
@@ -13,7 +19,7 @@ from items.models import (
     ItemDetailPage,
     ItemCategory,
 )
-from django.contrib.auth.models import User
+
 
 ### User Serializers
 class ReviewSerializer(serializers.Serializer):
@@ -38,9 +44,54 @@ class ReviewSerializer(serializers.Serializer):
         read_only=True,
         max_length=2000,
         required=False,
-        allow_blank=True)
+        allow_blank=True
+    )
 
 
+#class UserSerializer(serializers.Serializer):
+#    """"""
+    
+
+class UserSerializer(serializers.Serializer):
+    """
+    Specify the user serializer fields for logged in users (JWT's tokens)
+    """
+    id = serializers.IntegerField(
+        read_only=True
+    )
+    username = serializers.CharField(
+        read_only=True,
+        max_length=150
+    )
+    email = serializers.EmailField(
+        read_only=True
+    )
+    name = serializers.SerializerMethodField(
+        read_only=True
+    )
+    is_admin = serializers.SerializerMethodField(
+        read_only=True
+    )
+
+    def get_name(self, user_obj):
+        name = user_obj.first_name
+        if name == '':
+            name = user_obj.email
+        
+        return name
+
+    def get_is_admin(self, user_obj):
+        return user_obj.is_staff
+    
+class UserSerializerWithToken(UserSerializer):
+    """"""
+    token = serializers.SerializerMethodField(
+        read_only=True
+    )
+
+    def get_token(self, user_obj):
+        token = RefreshToken.for_user(user_obj)
+        return str(token)
 
 
 
@@ -54,7 +105,7 @@ class ImageSerializer(serializers.Serializer):
 
 
 class ItemSerializer(serializers.Serializer):
-    """"""
+    """Item serializer for various views like list and detail."""
 
     id = serializers.IntegerField(
         read_only=True
