@@ -10,6 +10,9 @@ import {
 } from '../constants/productConstants'
 
 
+// Reducers initiate the state and changes the state according to the actions
+// it receives from the actions that were dispatched.
+
 export const productListReducer = (state = { products: [] }, action) => {
     
     // Depending on the action type, do something.

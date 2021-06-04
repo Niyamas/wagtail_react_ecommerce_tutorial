@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { /* useState, */ useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -10,6 +10,7 @@ import { listProducts } from '../../actions/productActions'
 function HomeScreen() {
 
     // A redux hook that dispatches an action. Like setState, but redux
+    // dispatch is used to trigger an action
     const dispatch = useDispatch()
 
     // Chooses the productList from the dictionary of reducers in store.js and other files

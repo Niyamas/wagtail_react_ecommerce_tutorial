@@ -1,16 +1,18 @@
+// After being dispatched, the action will update the state and do other logic.
+
 import axios from 'axios'
-import { CART_ADD_ITEM } from '../constants/cartConstants'
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/cartConstants'
 
 
-export const addToCart = (id, quantity) => async(dispatch, getState) => {
+export const addToCart = (productId, quantity) => async(dispatch, getState) => {
     // getState is like useSelector. Can get parts or all of the state.
 
-    const { data } = await axios.get(`http://localhost:8000/api/v1/item/${id}`)
+    const { data } = await axios.get(`http://localhost:8000/api/v1/item/${productId}`)
 
     dispatch({
         type: CART_ADD_ITEM,
         payload: {
-            product: data.id,
+            id: data.id,
             name: data.title,
             image: data.image.file,
             price: data.price,
@@ -20,7 +22,18 @@ export const addToCart = (id, quantity) => async(dispatch, getState) => {
     })
 
     // Store item in local storage, so when the user revisits the website, their cart will still be there.
+    // Is cart the cartReducer?
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 
+}
 
+export const removeFromCart = (id) => (dispatch, getState) => {
+
+    dispatch({
+        type: CART_REMOVE_ITEM,
+        payload: id
+    })
+
+    // Update the cartItems variable in local storage after removing the item.
+    localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 }

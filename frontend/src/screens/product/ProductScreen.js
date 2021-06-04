@@ -10,12 +10,13 @@ import { listProductDetails } from '../../actions/productActions'
 
 import './css/product_screen.css'
 
-// match holds the specific object (item) information
+// match holds the specific object (item) information. Passed from App.js via route
 function ProductScreen({ match, history }) {
 
     const [quantity, setQuantity] = useState(1)
 
     // A redux hook that dispatches an action. Like setState, but redux
+    // dispatch is used to trigger an action
     const dispatch = useDispatch()
 
     // useSelector hook. Pull from the current state, the productDetails (productDetails is defined in the reducer constant in store.js)
@@ -132,7 +133,7 @@ function ProductScreen({ match, history }) {
                                                 <Button
                                                     className="add-btn btn-block"
                                                     onClick={ addToCartHandler }
-                                                    disabled={product.quantity_in_stock == 0}
+                                                    disabled={product.quantity_in_stock === 0}
                                                     type="button"
                                                 >
                                                     Add to Cart

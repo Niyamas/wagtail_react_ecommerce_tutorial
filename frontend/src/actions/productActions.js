@@ -1,4 +1,5 @@
-// Actions are used to change a particular state.
+// After being dispatched, the action will update the state and do other logic.
+
 
 import axios from 'axios'
 
