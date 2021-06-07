@@ -39,18 +39,6 @@ function ProductScreen({ match, history }) {
         history.push(`/cart/${match.params.id}?quantity=${quantity}`)
     }
 
-
-    // Shows "Still loading..." while the products list is empty. Once all the data is fetched,
-    // it will render the page's contents
-    /* if (product.length === 0) {
-
-        return (
-            <div> Still loading...</div>
-        )
-
-    }
-    else { */
-
     return (
 
         <div>

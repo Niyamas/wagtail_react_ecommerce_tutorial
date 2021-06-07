@@ -48,7 +48,7 @@ export const login = (email, password) => async (dispatch) => {
         localStorage.setItem('userInfo', JSON.stringify(data))
 
     }
-    catch(error) {
+    catch (error) {
 
         // Start product reducer with the specified case type
         dispatch({
@@ -58,5 +58,17 @@ export const login = (email, password) => async (dispatch) => {
         })
 
     }
+}
 
+
+export const logout = () => (dispatch) => {
+
+    // Log the user out by removing the userInfo from the local storage.
+    // Need to also update the state (done in userReducers.js).
+    localStorage.removeItem('userInfo')
+
+    // Send signal to userReducer to update the state by emptying the userInfo variable there.
+    dispatch({
+        type: USER_LOGOUT
+    })
 }

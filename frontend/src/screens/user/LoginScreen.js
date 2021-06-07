@@ -25,7 +25,7 @@ function LoginScreen({ location, history }) {
 
     // Get the querystring in the URL parameters and store its value in redirect if possible.
     const redirect = location.search ? location.search.split('=')[1] : '/'
-    console.log('redirect', location)
+    //console.log('redirect', location)
 
     // Get userLogin variables from the state.
     const userLogin = useSelector( (state) => state.userLogin )
