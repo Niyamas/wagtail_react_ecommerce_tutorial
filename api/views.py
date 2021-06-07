@@ -104,48 +104,75 @@ class UserCreateView(CreateAPIView):
     queryset = User.objects.all()
 
     def create(self, request, *args, **kwargs):
-        # Error handling when create user fails (Will show an error message rendered in the frontend).
-        # Validation comes from checking username uniqueness, and will fail to create the user if,
-        # a current user's username is the same.
+        """
+        Adds create functionality to the User model via this API view.
+        It will fill out the first_name and last_name if there are 2 names given.
+        If one is given, set that name as the first name
+        """
+
+        # If the user has put in two names, separate it into first_name and last_name and save that data.
         try:
-            user_data = {
-                'first_name': request.data['name'],
-                'username': request.data['email'],
-                'email': request.data['email'],
-                'password': make_password( request.data['password'] )
-            }
+            first_name = request.data['name'].split()[0]
+            last_name = request.data['name'].split()[1]
 
-            # Serialize the passed in user_data.
-            serializer = self.get_serializer(data=user_data, many=False)
+            # Error handling when create user fails (Will show an error message rendered in the frontend).
+            # Validation comes from checking username uniqueness, and will fail to create the user if,
+            # a current user's username is the same.
+            try:
+                user_data = {
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'username': request.data['email'],
+                    'email': request.data['email'],
+                    'password': make_password( request.data['password'] )
+                }
 
-            # Validate the serialized data.
-            serializer.is_valid(raise_exception=True)
+                # Serialize the passed in user_data.
+                serializer = self.get_serializer(data=user_data, many=False)
 
-            # If validation is good, create the new user object.
-            self.perform_create(serializer)
-            headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+                # Validate the serialized data.
+                serializer.is_valid(raise_exception=True)
 
+                # If validation is good, create the new user object.
+                self.perform_create(serializer)
+                headers = self.get_success_headers(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+            except:
+                message = {'detail': 'User with this email already exists'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+        # If the user put in one name, save that name as the first name.
         except:
-            message = {'detail': 'User with this email already exists'}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+            # Error handling when create user fails (Will show an error message rendered in the frontend).
+            # Validation comes from checking username uniqueness, and will fail to create the user if,
+            # a current user's username is the same.
+            try:
+                user_data = {
+                    'first_name': request.data['name'],
+                    'username': request.data['email'],
+                    'email': request.data['email'],
+                    'password': make_password( request.data['password'] )
+                }
 
 
+                # Serialize the passed in user_data.
+                serializer = self.get_serializer(data=user_data, many=False)
+                print('user_data:', serializer)
 
+                # Validate the serialized data.
+                serializer.is_valid(raise_exception=True)
 
-""" class UserProfileView(GenericAPIView):
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
+                # If validation is good, create the new user object.
+                self.perform_create(serializer)
+                headers = self.get_success_headers(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    def get_current_user(self):
-        request = self.context.get('request')
-        if request and hasattr(request, 'user')
-            return request.user
+            except:
+                message = {'detail': 'User with this email already exists'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context = ['user']
-        return context """
 
 
 # {"name":"Galuf","email":"galuf@email.com","password":"Ddfquuwhewr9"}

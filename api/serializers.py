@@ -1,4 +1,3 @@
-from enum import unique
 from django.contrib.auth.models import User
 
 
@@ -67,8 +66,15 @@ class UserSerializer(serializers.Serializer):
     email = serializers.EmailField(
         read_only=True,
     )
-    name = serializers.SerializerMethodField(
-        read_only=True
+    #name = serializers.SerializerMethodField(
+    #    read_only=True
+    #)
+    first_name = serializers.CharField(
+        max_length=150
+    )
+    last_name = serializers.CharField(
+        max_length=150,
+        required=False
     )
     is_admin = serializers.SerializerMethodField(
         read_only=True
@@ -92,7 +98,14 @@ class UserSerializerWithToken(UserSerializer):
         max_length=150
     )
     email = serializers.EmailField()
-    name = serializers.SerializerMethodField()
+    #name = serializers.SerializerMethodField()
+    first_name = serializers.CharField(
+        max_length=150
+    )
+    last_name = serializers.CharField(
+        max_length=150,
+        required=False
+    )
     token = serializers.SerializerMethodField()
 
     def get_token(self, user_obj):
