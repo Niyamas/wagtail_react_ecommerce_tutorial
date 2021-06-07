@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'search',
     'items',
     'users',
-    'api',
+    #'api',
+    'api.apps.ApiConfig',       # Configure this way instead of 'api' due to it being connected with the updateUser signal.
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',

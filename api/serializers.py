@@ -1,3 +1,4 @@
+from enum import unique
 from django.contrib.auth.models import User
 
 
@@ -64,7 +65,7 @@ class UserSerializer(serializers.Serializer):
         max_length=150
     )
     email = serializers.EmailField(
-        read_only=True
+        read_only=True,
     )
     name = serializers.SerializerMethodField(
         read_only=True
@@ -84,16 +85,23 @@ class UserSerializer(serializers.Serializer):
         return user_obj.is_staff
     
 class UserSerializerWithToken(UserSerializer):
-    """"""
-    token = serializers.SerializerMethodField(
-        read_only=True
+    """
+    Inherits from UserSerializer and includes a create method for registering new users.
+    """
+    username = serializers.CharField(
+        max_length=150
     )
+    email = serializers.EmailField()
+    name = serializers.SerializerMethodField()
+    token = serializers.SerializerMethodField()
 
     def get_token(self, user_obj):
         token = RefreshToken.for_user(user_obj)
         return str(token)
 
-
+    def create(self, validated_data):
+        """Adds create functionality for the User model."""
+        return User.objects.all().create(**validated_data)
 
 
 

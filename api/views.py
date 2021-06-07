@@ -1,13 +1,16 @@
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 
-from rest_framework import serializers
-from rest_framework.decorators import api_view
+from rest_framework import serializers, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
     ListAPIView,
+    CreateAPIView,
 
     GenericAPIView
 )
@@ -74,17 +77,59 @@ class ItemDetailListView(RetrieveUpdateDestroyAPIView):
 
 
 
-
+"""User API Views"""
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getUserProfile(request):
     """
     Needs the JWT token to be passed in order to return the serialized data.
     That is, the user needs to be logged in to access his/her profile data.
+    Only logged-in, admin users can use this view.
     """
     user = request.user
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
+
+#@permission_classes([IsAdminUser])
+class UserListView(ListAPIView):
+    """
+    Returns a list of users. Only admins can view it.
+    """
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+class UserCreateView(CreateAPIView):
+    serializer_class = UserSerializerWithToken
+    queryset = User.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        # Error handling when create user fails (Will show an error message rendered in the frontend).
+        # Validation comes from checking username uniqueness, and will fail to create the user if,
+        # a current user's username is the same.
+        try:
+            user_data = {
+                'first_name': request.data['name'],
+                'username': request.data['email'],
+                'email': request.data['email'],
+                'password': make_password( request.data['password'] )
+            }
+
+            # Serialize the passed in user_data.
+            serializer = self.get_serializer(data=user_data, many=False)
+
+            # Validate the serialized data.
+            serializer.is_valid(raise_exception=True)
+
+            # If validation is good, create the new user object.
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+        except:
+            message = {'detail': 'User with this email already exists'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
@@ -94,7 +139,7 @@ def getUserProfile(request):
 
     def get_current_user(self):
         request = self.context.get('request')
-        if request and hasattr(request, 'user'):
+        if request and hasattr(request, 'user')
             return request.user
 
     def get_serializer_context(self):
@@ -103,13 +148,11 @@ def getUserProfile(request):
         return context """
 
 
+# {"name":"Galuf","email":"galuf@email.com","password":"Ddfquuwhewr9"}
 
 
 
-
-
-
-# Simple JWT serializers
+"""Simple JWT serializers"""
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
