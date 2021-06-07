@@ -21,9 +21,7 @@ urlpatterns = [
 
     path('api/v1/', include('api.urls')),                   # DRF urls
 
-
     path('api-wagtail/v2/', api_router.urls),               # Wagtail API v2 urls
-
 
 ]
 

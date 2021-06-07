@@ -80,12 +80,12 @@ class UserSerializer(serializers.Serializer):
         read_only=True
     )
 
-    def get_name(self, user_obj):
-        name = user_obj.first_name
-        if name == '':
-            name = user_obj.email
+    #def get_name(self, user_obj):
+    #    name = user_obj.first_name
+    #    if name == '':
+    #        name = user_obj.email
         
-        return name
+    #    return name
 
     def get_is_admin(self, user_obj):
         return user_obj.is_staff

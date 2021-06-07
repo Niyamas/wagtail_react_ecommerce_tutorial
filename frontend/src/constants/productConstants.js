@@ -1,5 +1,4 @@
-// Variable constants pointing to string values
-
+// Item constants for determining actions.
 
 // Home page constants
 export const PRODUCT_LIST_REQUEST = 'PRODUCT_LIST_REQUEST'

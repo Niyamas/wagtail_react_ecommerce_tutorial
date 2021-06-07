@@ -1,6 +1,5 @@
 // After being dispatched, the action will update the state and do other logic.
 
-
 import axios from 'axios'
 
 import {
@@ -34,10 +33,11 @@ export const listProducts = () => async (dispatch) => {
     }
     catch(error) {
 
-        // // Start product reducer with the specified case type
+        // Start product reducer with the specified case type
+        // Detail comes from the error message from api.views.UserCreateView() and is a custom message.
         dispatch({
             type: PRODUCT_LIST_FAIL,
-            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
 
         })
     }
@@ -64,12 +64,11 @@ export const listProductDetails = (id) => async (dispatch) => {
     }
     catch(error) {
 
-        // // Start product reducer with the specified case type
+        // Start product reducer with the specified case type
         dispatch({
             type: PRODUCT_DETAILS_FAIL,
-            payload: error.response && error.response.data.message ? error.response.data.message
+            payload: error.response && error.response.data.detail ? error.response.data.detail
             : error.message,
-
         })
     }
 }

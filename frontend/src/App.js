@@ -7,6 +7,7 @@ import Footer from './components/footer/Footer'
 import HomeScreen from './screens/home/HomeScreen'
 import ProductScreen from './screens/product/ProductScreen'
 import CartScreen from './screens/cart/CartScreen'
+import LoginScreen from './screens/user/LoginScreen'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
 			<main className="py-3">
 				<Container>
 					<Route path='/' component={ HomeScreen } exact />
+					<Route path='/login' component={ LoginScreen } />
 					<Route path='/product/:id' component={ ProductScreen } />
 					<Route path='/cart/:id?' component={ CartScreen } />
 				</Container>

@@ -7,23 +7,17 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from rest_framework.generics import (
-    ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
     ListAPIView,
     CreateAPIView,
-
-    GenericAPIView
 )
 
 from api.serializers import (
     ReviewSerializer,
     ItemSerializer,
-
     UserSerializer,
     UserSerializerWithToken
 )
-
-from .products import products
 
 from items.models import (
     ItemListingPage,
@@ -57,6 +51,8 @@ def getRoutes(request):
 
     return Response(routes)
 
+
+"""Item API Views"""
 
 class ItemListView(ListAPIView):
     """
@@ -180,6 +176,7 @@ class UserCreateView(CreateAPIView):
 
 
 """Simple JWT serializers"""
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
