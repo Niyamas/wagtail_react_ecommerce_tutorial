@@ -50,7 +50,7 @@ function ShippingScreen({ history }) {
 
             history.push('/login')
         }
-    }, [userInfo])
+    }, [userInfo, history])
 
     return (
 
