@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'search',
     'items',
     'users',
+    'dashboard.apps.DashboardConfig',
     #'api',
     'api.apps.ApiConfig',       # Configure this way instead of 'api' due to it being connected with the updateUser signal.
 
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     # Wagtail additions:
     'wagtail.contrib.modeladmin',
     'wagtail.api.v2',
+    'wagtail.contrib.styleguide',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -203,6 +205,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Essential for API work.
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv())
 
+#CORS_ALLOW_ALL_ORIGINS = True
 
 
 """

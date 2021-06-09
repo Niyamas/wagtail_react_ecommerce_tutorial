@@ -1,0 +1,23 @@
+{% extends "wagtailadmin/login.html" %}
+
+
+{% block fields %}
+
+<li class="full">
+    <div class="field iconfield">
+        {{ form.username.label_tag }}
+        <div class="input icon-mail">
+            {{ form.username }}
+        </div>
+    </div>
+</li>
+<li class="full">
+    <div class="field iconfield">
+        {{ form.password.label_tag }}
+        <div class="input icon-password">
+            {{ form.password }}
+        </div>
+    </div>
+</li>
+
+{% endblock %}

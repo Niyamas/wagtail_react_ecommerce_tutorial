@@ -87,6 +87,51 @@ def getUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    """
+    Needs the JWT token to be passed in order to return the serialized data.
+    That is, the user needs to be logged in to access his/her profile data.
+    Only logged-in, admin users can use this view.
+    """
+    user = request.user
+    serializer = UserSerializerWithToken(user, many=False)
+
+    # If the user has put in two names, separate it into first_name and last_name and save that data.
+    try:
+        first_name = request.data['name'].split()[0]
+        last_name = request.data['name'].split()[1]
+
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = request.data['email']
+        user.email = request.data['email']
+
+        # Only modify the password if the field isn't empty.
+        if request.data['password'] != '':
+            user.password = make_password( request.data['password'] )
+
+        user.save()
+        return Response(serializer.data)
+
+    # For users who enter one name.
+    except:
+        user.first_name = request.data['name']
+        user.last_name = ''
+        user.username = request.data['email']
+        user.email = request.data['email']
+
+        if request.data['password'] != '':
+            user.password = make_password( request.data['password'] )
+
+        user.save()
+        return Response(serializer.data)
+
+
+
+
 #@permission_classes([IsAdminUser])
 class UserListView(ListAPIView):
     """
@@ -147,6 +192,7 @@ class UserCreateView(CreateAPIView):
             try:
                 user_data = {
                     'first_name': request.data['name'],
+                    'last_name': '',
                     'username': request.data['email'],
                     'email': request.data['email'],
                     'password': make_password( request.data['password'] )
@@ -155,7 +201,6 @@ class UserCreateView(CreateAPIView):
 
                 # Serialize the passed in user_data.
                 serializer = self.get_serializer(data=user_data, many=False)
-                print('user_data:', serializer)
 
                 # Validate the serialized data.
                 serializer.is_valid(raise_exception=True)
@@ -186,11 +231,23 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Get the fields from the user profile serializer.
         serializer = UserSerializerWithToken(self.user).data
 
+        #data['username'] = self.user.username
+        #data['email'] = self.user.email
+        #data['first_name'] = self.user.first_name
+        #data['last_name'] = self.user.last_name
+        #data['is_admin'] = self.user.is_admin
+
         for fields, values in serializer.items():
             data[fields] = values
+
+        print('data:', data)
 
         return data
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+
+#"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjI0MzkzMjMwLCJqdGkiOiJhODI0NjVjZWZkNWY0N2Y0ODAwMWNmMWVkZDhlNWU0OCIsInVzZXJfaWQiOjQ5fQ.os44UYI0kNwbwRegRkwT0YdJhHPZWCDunkkyR5oP05k"

@@ -8,7 +8,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { productListReducer, productDetailsReducer } from './reducers/productReducers'
 import { cartReducer } from './reducers/cartReducers'
-import { userLoginReducer } from './reducers/userReducers'
+import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer } from './reducers/userReducers'
 
 
 // Register reducers and collates them into a single constant.
@@ -17,7 +17,10 @@ const reducer = combineReducers({
     productList: productListReducer,
     productDetails: productDetailsReducer,
     cart: cartReducer,
-    userLogin: userLoginReducer
+    userLogin: userLoginReducer,
+    userRegister: userRegisterReducer,
+    userDetails: userDetailsReducer,
+    userUpdateProfile: userUpdateProfileReducer,
 })
 
 // Pull cart data from local storage and parse it.
@@ -30,10 +33,18 @@ const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(loca
 const userInfoFromStorage = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo'))
     : null
 
+// Pull user data from local storage and parse it.
+// Add conditional to check if the data still exists.
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress') ? JSON.parse(localStorage.getItem('shippingAddress'))
+    : {}
+
 // Set initial state, which has a number of values. Set the cart state to whatever is in local storage for the user with respect to their carts.
 // Makes this data available for all pages.
 const initialState = {
-    cart: { cartItems: cartItemsFromStorage },
+    cart: {
+        cartItems: cartItemsFromStorage,
+        shippingAddress: shippingAddressFromStorage
+    },
     userLogin: { userInfo: userInfoFromStorage }
 }
 

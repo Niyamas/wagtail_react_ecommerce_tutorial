@@ -60,11 +60,11 @@ class UserSerializer(serializers.Serializer):
         read_only=True
     )
     username = serializers.CharField(
-        read_only=True,
+        #read_only=True,
         max_length=150
     )
     email = serializers.EmailField(
-        read_only=True,
+        #read_only=True,
     )
     #name = serializers.SerializerMethodField(
     #    read_only=True
@@ -110,7 +110,7 @@ class UserSerializerWithToken(UserSerializer):
 
     def get_token(self, user_obj):
         token = RefreshToken.for_user(user_obj)
-        return str(token)
+        return str(token.access_token)
 
     def create(self, validated_data):
         """Adds create functionality for the User model."""

@@ -8,13 +8,17 @@ import Loader from '../../components/shared/Loader'
 import Message from '../../components/shared/Message'
 import FormContainer from '../../components/shared/FormContainer'
 
-import { login } from '../../actions/userActions'
+import { register } from '../../actions/userActions'
 
 
-function LoginScreen({ location, history }) {
+function RegisterScreen({ location, history }) {
 
+    // State variables.
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [message, setMessage] = useState('')
 
     // A redux hook that dispatches an action. Like setState, but redux
     // dispatch is used to trigger an action
@@ -22,11 +26,10 @@ function LoginScreen({ location, history }) {
 
     // Get the querystring in the URL parameters and store its value in redirect if possible.
     const redirect = location.search ? location.search.split('=')[1] : '/'
-    //console.log('redirect', location)
 
-    // Get userLogin variables from the state.
-    const userLogin = useSelector( (state) => state.userLogin )
-    const { loading, userInfo, error } = userLogin
+    // Get userRegister variables from the state.
+    const userRegister = useSelector( (state) => state.userRegister )
+    const { loading, userInfo, error } = userRegister
 
     // Trigger state change when history, userInfo, or redirect changes.
     useEffect( () => {
@@ -44,8 +47,18 @@ function LoginScreen({ location, history }) {
         // Prevents the form from being submitted.
         event.preventDefault()
 
-        // Call the login function
-        dispatch( login(email, password) )
+        // Show a custom error if the password is not equal to the confirmed password field.
+        // If they do, dispatch the register action.
+        if (password !== confirmPassword) {
+
+            setMessage('Passwords do not match.')
+        }
+        else {
+
+            // Call the regsiter action -> reducer -> update state
+            dispatch( register(name, email, password) )
+        }
+
     }
 
     return (
@@ -53,11 +66,27 @@ function LoginScreen({ location, history }) {
         <FormContainer>
             <h1>Sign In</h1>
 
+            {/* This error shows when the passwords don't match */}
+            { message && <Message variant="danger">{ message }</Message> }
+
+            {/* This error shows when something like an email already exists for that username. */}
             { error && <Message variant="danger">{ error }</Message> }
 
             { loading && <Loader /> }
 
             <Form onSubmit={ submitHandler }>
+                <Form.Group controlId="name">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                        type="name"
+                        placeholder="Name"
+                        value={name}
+                        onChange={ (event) => setName(event.target.value) }
+                        required
+                    >
+                    </Form.Control>
+                </Form.Group>
+
                 <Form.Group controlId="email">
                     <Form.Label>Email Address</Form.Label>
                     <Form.Control
@@ -65,6 +94,7 @@ function LoginScreen({ location, history }) {
                         placeholder="Email"
                         value={email}
                         onChange={ (event) => setEmail(event.target.value) }
+                        required
                     >
                     </Form.Control>
                 </Form.Group>
@@ -76,22 +106,34 @@ function LoginScreen({ location, history }) {
                         placeholder="Password"
                         value={password}
                         onChange={ (event) => setPassword(event.target.value) }
+                        required
                     >
                     </Form.Control>
                 </Form.Group>
 
-                <Button type="submit" variant="primary">Sign In</Button>
+                <Form.Group controlId="passwordConfirm">
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={ (event) => setConfirmPassword(event.target.value) }
+                        required
+                    >
+                    </Form.Control>
+                </Form.Group>
 
+                <Button type="submit" variant="primary">Register</Button>
             </Form>
 
             <Row className="py-3">
                 <Col>
-                    New Customer?
+                    Have an Account?
                     <Link
                         /* Check if redirect is there, if not, go to the register page. */
-                        to={ redirect ? `/register?redirect=${ redirect }` : '/register' }
+                        to={ redirect ? `/login?redirect=${ redirect }` : '/login' }
                     >
-                        Register
+                        Sign In
                     </Link>
                 </Col>
             </Row>
@@ -101,4 +143,4 @@ function LoginScreen({ location, history }) {
     )
 }
 
-export default LoginScreen
+export default RegisterScreen

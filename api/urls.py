@@ -6,14 +6,14 @@ from api.views import (
     ItemDetailListView,
 
     getUserProfile,
+    updateUserProfile,
     UserListView,
     UserCreateView,
 
-    MyTokenObtainPairSerializer,
     MyTokenObtainPairView
 )
 
-from rest_framework_simplejwt.views import TokenObtainPairView
+#from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 urlpatterns = [
@@ -23,6 +23,7 @@ urlpatterns = [
     path('users/', UserListView.as_view(), name='user-list'),
     path('users/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),     # DRF simple JWT: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
     path('users/profile/', getUserProfile, name='user-profile'),
+    path('users/profile/update/', updateUserProfile, name='user-profile-update'),
     path('users/register/', UserCreateView.as_view(), name='user-register'),
 
     # Item

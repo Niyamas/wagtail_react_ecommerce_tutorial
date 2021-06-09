@@ -1,7 +1,11 @@
 // After being dispatched, the action will update the state and do other logic.
 
 import axios from 'axios'
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/cartConstants'
+import {
+    CART_ADD_ITEM,
+    CART_REMOVE_ITEM,
+    CART_SAVE_SHIPPING_ADDRESS
+} from '../constants/cartConstants'
 
 
 export const addToCart = (productId, quantity) => async(dispatch, getState) => {
@@ -36,4 +40,15 @@ export const removeFromCart = (id) => (dispatch, getState) => {
 
     // Update the cartItems variable in local storage after removing the item.
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
+}
+
+export const saveShippingAddress = (data) => (dispatch) => {
+
+    dispatch({
+        type: CART_SAVE_SHIPPING_ADDRESS,
+        payload: data
+    })
+
+    // Update the cartItems variable in local storage after removing the item.
+    localStorage.setItem('shippingAddress', JSON.stringify(data))
 }
