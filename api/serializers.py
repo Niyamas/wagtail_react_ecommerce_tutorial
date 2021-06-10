@@ -21,7 +21,7 @@ from items.models import (
 )
 
 
-### User Serializers
+"""User Serializers"""
 class ReviewSerializer(serializers.Serializer):
     id = serializers.IntegerField(
         read_only=True
@@ -48,9 +48,7 @@ class ReviewSerializer(serializers.Serializer):
     )
 
 
-#class UserSerializer(serializers.Serializer):
-#    """"""
-    
+
 
 class UserSerializer(serializers.Serializer):
     """
@@ -118,6 +116,7 @@ class UserSerializerWithToken(UserSerializer):
 
 
 
+"""Item Serializers."""
 class ImageSerializer(serializers.Serializer):
     """Nested image serializer included in the ItemDetailSerializer."""
 
@@ -170,3 +169,138 @@ class ItemSerializer(serializers.Serializer):
     quantity_reviews = serializers.IntegerField(
         read_only=True
     )
+
+class ShippingAddressSerializer(serializers.Serializer):
+    """"""
+
+    cart = PrimaryKeyRelatedField(
+        #read_only=True,
+        queryset=ShippingAddress.objects.all()
+    )
+    address = serializers.CharField(
+        max_length=200
+    )
+    city = serializers.CharField(
+        max_length=100
+    )
+    postal_code = serializers.CharField(
+        max_length=10,
+        required=False
+    )
+    country = serializers.CharField(
+        max_length=100
+    )
+    shipping_price = serializers.DecimalField(
+        max_digits=7,
+        decimal_places=2
+    )
+
+    def create(self, validated_data):
+        """
+        Adds create write functionality to the cart serializer
+        """
+        return ShippingAddress.objects.create(**validated_data)
+
+class OrderSerializer(serializers.Serializer):
+    """"""
+
+    item = PrimaryKeyRelatedField(
+        #read_only=True,
+        #queryset=ItemListingPage.live().public()
+        queryset=ItemListingPage.objects.all()
+    )
+    image = serializers.CharField(
+        max_length=2000
+    )
+    cart = PrimaryKeyRelatedField(
+        #read_only=True,
+        queryset=Order.objects.all()
+    )
+    name = serializers.CharField(
+        max_length=200
+    )
+    quantity = serializers.IntegerField(
+        min_value=0
+    )
+    price = serializers.DecimalField(
+        max_digits=7,
+        decimal_places=2
+    )
+
+    def create(self, validated_data):
+        """
+        Adds create write functionality to the cart serializer
+        """
+        return Order.objects.create(**validated_data)
+
+"""Cart Serializers"""
+class CartSerializer(serializers.Serializer):
+    """Cart serializer."""
+
+    user = PrimaryKeyRelatedField(
+        #read_only=True,
+        queryset=User.objects.all()
+    )
+    orders = serializers.SerializerMethodField(
+        read_only=True
+    )
+    shipping_address = serializers.SerializerMethodField(
+        read_only=True
+    )
+    payment_method = serializers.CharField(
+        max_length=100
+    )
+    tax_price = serializers.DecimalField(
+        max_digits=7,
+        decimal_places=2
+    )
+    shipping_price = serializers.DecimalField(
+        max_digits=7,
+        decimal_places=2
+    )
+    total_price = serializers.DecimalField(
+        max_digits=7,
+        decimal_places=2
+    )
+    is_paid = serializers.BooleanField(
+        required=False
+    )
+    paid_at = serializers.DateTimeField(
+        required=False
+    )
+    is_delivered = serializers.BooleanField(
+        required=False
+    )
+    delivered_at = serializers.DateTimeField(
+        required=False
+    )
+    created_at = serializers.DateTimeField(
+        required=False
+    )
+
+    def get_user(self, obj):
+        """Returns the user data. Obj = user object?"""
+        user = obj.user
+        serializer = UserSerializer(data=user, many=False)
+        return serializer.data
+
+    def get_orders(self, obj):
+        """Returns the customer's orders in their cart. Obj = orders object?"""
+        items = obj.order_set.all()
+        serializer = OrderSerializer(data=items, many=True)
+        return serializer.data
+
+    def get_shipping_address(self, obj):
+        """Returns the customer's shipping address if it exists. Obj = shipping_address obj?"""
+        try:
+            address = ShippingAddressSerializer(data=obj.shipping_address, many=False)
+        except:
+            address = False
+
+        return address
+
+    def create(self, validated_data):
+        """
+        Adds create write functionality to the cart serializer
+        """
+        return Cart.objects.create(**validated_data)

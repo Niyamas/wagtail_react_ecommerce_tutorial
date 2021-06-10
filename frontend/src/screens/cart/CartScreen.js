@@ -59,7 +59,7 @@ function CartScreen({ match, location, history }) {
                     cartItems.length === 0 ? (
 
                         <Message variant="info">
-                            Your cart is empty! <Link to="/">Go Back</Link>
+                            Your cart is empty <Link to="/">Go Back</Link>
                         </Message>
 
                     ) : (

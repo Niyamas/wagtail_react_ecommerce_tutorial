@@ -145,11 +145,11 @@ class Order(models.Model):
 class ShippingAddress(models.Model):
     """"""
 
-    order = models.OneToOneField(
-        'users.Order',
+    cart = models.OneToOneField(
+        'users.Cart',
         blank=True,
         null=True,
-        on_delete=models.CASCADE  # When an order is deleted, the shipping address object connected to it will also be removed
+        on_delete=models.CASCADE  # When a cart is deleted, the shipping address object connected to it will also be removed
     )
     address = models.CharField(
         max_length=200,

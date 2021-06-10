@@ -42,7 +42,7 @@ export const productDetailsReducer = (state = { product: {reviews: []} }, action
 
         // Case when products are loading.
         case PRODUCT_DETAILS_REQUEST:
-            return { loading: true, ...state }
+            return { loading: true, product: {} }
 
         // Case when product loading is complete.
         case PRODUCT_DETAILS_SUCCESS:

@@ -15,8 +15,13 @@ from rest_framework.generics import (
 from api.serializers import (
     ReviewSerializer,
     ItemSerializer,
+
     UserSerializer,
-    UserSerializerWithToken
+    UserSerializerWithToken,
+
+    CartSerializer,
+    OrderSerializer,
+    ShippingAddressSerializer
 )
 
 from items.models import (
@@ -69,6 +74,103 @@ class ItemDetailListView(RetrieveUpdateDestroyAPIView):
     """
     serializer_class = ItemSerializer
     queryset = ItemDetailPage.objects.all()
+
+
+
+
+"""Cart API Views"""
+
+#@permission_classes(['IsAuthenticated'])
+class CartOrderCreateView(CreateAPIView):
+    """
+    """
+    serializer_class = CartSerializer
+
+    def perform_create(self, serializer):
+        return serializer.save()
+    
+    def create(self, request, *args, **kwargs):
+
+        # Store the request data that is passed to this view.
+        user = request.user
+        data = request.data
+
+        # Orders data passed from the frontend via request to this view.
+        orders = data['orders']
+
+        # Check if there are orders in the customer's cart.
+        if orders and len(orders) == 0:
+
+            # If there are no orders in the cart, send a message to the frontend called 'detail'.
+            return Response({'detail': 'No order items'}, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+
+            # (1) Create cart. Boolean values will be updated later.
+            cart_data = {
+                'user': user,
+                'payment_method': data['paymentMethod'],
+                'tax_price': data['taxPrice'],
+                'shipping_price': data['shippingPrice'],
+                'total_price': data['totalPrice'],
+            }
+
+            # Validate, serialize, and save the data.
+            cart_serializer = CartSerializer(data=cart_data, many=False)
+            cart_serializer.is_valid(raise_exception=True)
+            newly_created_cart = cart_serializer.save()
+            headers = self.get_success_headers(cart_serializer)
+
+
+            # (2) Create shipping address
+            shipping_address_data = {
+                'cart': newly_created_cart,
+                'address': data['shippingAddress']['address'],
+                'city': data['shippingAddress']['city'],
+                'postal_code': data['postal_code']['postal_code'],
+                'country': data['country']['country'],
+            }
+
+            # Validate, serialize, and save the data.
+            shipping_address_serializer = ShippingAddressSerializer(data=shipping_address_data, many=False)
+            shipping_address_serializer.is_valid(raise_exception=True)
+            self.perform_create(shipping_address_serializer)
+            headers = self.get_success_headers(shipping_address_serializer)
+
+            # (3) Create orders and assign each order to the new cart.
+            for order in orders:
+                order_obj = ItemListingPage.public().live().get(id=order['id'])
+
+                order_data = {
+                    'item': order_obj,
+                    'image': order_obj.image.url,   # @ todo, see if this serializes correctly the URL.
+                    'cart': newly_created_cart,
+                    'name': order_obj.name,
+                    'quantity': order['quantity'],
+                    'price': order['price'],
+                }
+
+                # Validate, serialize, and save the data.
+                order_serializer = OrderSerializer(data=order_data, many=False)
+                order_serializer.is_valid(raise_exception=True)
+                newly_created_order = order_serializer.save()
+                headers = self.get_success_headers(order_serializer)
+
+            # (4) Update stock. Objects can use dot notation!
+            order_obj.quantity_in_stock -= newly_created_order.quantity
+            order_obj.save()
+
+            # Return the serialized cart data to the frontend or API page.
+            return Response(cart_serializer.data)
+
+
+
+
+
+
+
+
+
 
 
 

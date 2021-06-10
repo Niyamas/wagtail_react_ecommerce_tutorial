@@ -9,8 +9,9 @@ from api.views import (
     updateUserProfile,
     UserListView,
     UserCreateView,
+    MyTokenObtainPairView,
 
-    MyTokenObtainPairView
+    CartOrderCreateView
 )
 
 #from rest_framework_simplejwt.views import TokenObtainPairView
@@ -28,7 +29,8 @@ urlpatterns = [
 
     # Item
     path('items/', ItemListView.as_view(), name='item-list'),
-    path('item/<int:pk>/', ItemDetailListView.as_view(), name='item-detail')
+    path('item/<int:pk>/', ItemDetailListView.as_view(), name='item-detail'),
 
     # Cart
+    path('cart/add/', CartOrderCreateView.as_view(), name='cart-order-add')
 ]
