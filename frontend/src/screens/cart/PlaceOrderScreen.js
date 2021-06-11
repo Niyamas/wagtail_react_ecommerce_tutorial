@@ -7,8 +7,19 @@ import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import Message from '../../components/shared/Message'
 import CheckoutSteps from '../../components/cart/CheckoutSteps'
 
+import { createOrder } from '../../actions/orderActions'
 
-function PlaceOrderScreen() {
+import { ORDER_CREATE_RESET } from '../../constants/orderConstants'
+
+
+function PlaceOrderScreen({ history }) {
+
+    // Get order, success, and error variables from orderCreate, which is part of the state.
+    const orderCreate = useSelector( (state) => state.orderCreate )
+    const { order, success, error } = orderCreate
+
+    // From Redux. Enables action dispatch.
+    const dispatch = useDispatch()
 
     // Get the cart variable in the list of state variables.
     const cart = useSelector( (state) => state.cart )
@@ -17,18 +28,45 @@ function PlaceOrderScreen() {
     cart.itemsPrice = cart.cartItems.reduce( (acc, item) => acc + item.price * item.quantity, 0 ).toFixed(2)
 
     // If the total is over $100, shipping is free. Otherwise, there is a $10 shipping fee
-    cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2)
+    cart.shippingPrice = parseFloat(cart.itemsPrice > 100 ? 0 : 10).toFixed(2)
 
-    // Illinois tax rate is 6.25% generally.
-    cart.taxPrice = Number((0.0625) * cart.itemsPrice).toFixed(2)
+    // Illinois tax rate is 6.25% generally. Shipping price is taxed too.
+    cart.taxPrice = Number((0.0625) * ( Number(cart.itemsPrice) + Number(cart.shippingPrice) ) ).toFixed(2)
 
     // Get the grand total for the customer cart.
     cart.totalPrice = ( Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice) ).toFixed(2)
 
-    // Handles the logic after user clicks on the place order button
+    // If the paymentMethod isn't in the state (did not set in Redux store)
+    // redirect the user back to the payment page to store that data again
+    if (!cart.paymentMethod) {
+
+        history.push('/payment')
+    }
+
+    //
+    useEffect( () => {
+
+        if (success) {
+
+            // After clicking the button, reset the orderCreate state variable.
+            dispatch({ type: ORDER_CREATE_RESET })
+            
+            history.push(`/order/${order.id}`)
+        }
+    }, [success, history])
+
+    // Handles the logic after user clicks on the place order button.
     const placeOrder = () => {
 
-        console.log('Place order')
+        dispatch( createOrder({
+            orders: cart.cartItems,
+            shipping_address: cart.shippingAddress,
+            payment_method: cart.paymentMethod,
+            items_price: cart.itemsPrice,
+            shipping_price: cart.shippingPrice,
+            tax_price: cart.taxPrice,
+            total_price: cart.totalPrice
+        }) )
     }
 
     return (
@@ -126,6 +164,12 @@ function PlaceOrderScreen() {
                                 <Col>Total:</Col>
                                 <Col>${ cart.totalPrice }</Col>
                             </Row>
+                        </ListGroup.Item>
+
+                        <ListGroup.Item>
+                            {
+                                error && <Message variant="danger">{ error }</Message>
+                            }
                         </ListGroup.Item>
 
                         <ListGroup.Item>

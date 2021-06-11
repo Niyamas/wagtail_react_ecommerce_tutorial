@@ -36,7 +36,7 @@ class Review(models.Model):
 
     def __str__(self):
         # @todo make it so incoming objects will always be unique?
-        return str(self.id + ' ' + self.name + ' ' + self.rating)
+        return str( str(self.id) + ' ' + str(self.name) + ' ' + str(self.rating) )
 
 
 
@@ -54,13 +54,13 @@ class Cart(models.Model):
         blank=True,
         null=True
     )
-    tax_price = models.DecimalField(
+    shipping_price = models.DecimalField(
         max_digits=7,
         decimal_places=2,
         blank=True,
         null=True
     )
-    shipping_price = models.DecimalField(
+    tax_price = models.DecimalField(
         max_digits=7,
         decimal_places=2,
         blank=True,
@@ -97,7 +97,7 @@ class Cart(models.Model):
     )
 
     def __str__(self):
-        return str(self.id + ' ' + self.user + ' ' + self.created_at)
+        return str( str(self.id) + ' ' + str(self.user) + ' ' + str(self.created_at) )
 
 
 class Order(models.Model):
@@ -138,7 +138,7 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return str(self.id + ' ' + self.name)
+        return str( str(self.id) + ' ' + str(self.name) )
 
 
 
@@ -179,4 +179,4 @@ class ShippingAddress(models.Model):
     )
 
     def __str__(self):
-        return str(self.id + ' ' + self.address)
+        return str( str(self.id) + ' ' + str(self.address) )

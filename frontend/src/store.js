@@ -7,8 +7,9 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import { productListReducer, productDetailsReducer } from './reducers/productReducers'
-import { cartReducer } from './reducers/cartReducers'
 import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer } from './reducers/userReducers'
+import { cartReducer } from './reducers/cartReducers'
+import { orderCreateReducer } from './reducers/orderReducers'
 
 
 // Register reducers and collates them into a single constant.
@@ -16,11 +17,12 @@ import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdatePr
 const reducer = combineReducers({ 
     productList: productListReducer,
     productDetails: productDetailsReducer,
-    cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
+    cart: cartReducer,
+    orderCreate: orderCreateReducer,
 })
 
 // Pull cart data from local storage and parse it.

@@ -70,8 +70,8 @@ class ShippingAddressAdmin(ModelAdmin):
     exclude_from_explorer = False
     inspect_view_enabled = True
 
-    list_display = ('order', 'address', 'city', 'postal_code', 'country', 'shipping_price',)
-    list_filter = ('order', 'address', 'city', 'postal_code', 'country', 'shipping_price',)
+    list_display = ('id', 'cart', 'address', 'city', 'postal_code', 'country', 'shipping_price',)
+    list_filter = ('id', 'cart', 'address', 'city', 'postal_code', 'country', 'shipping_price',)
     list_filter = ('country',)
 
 

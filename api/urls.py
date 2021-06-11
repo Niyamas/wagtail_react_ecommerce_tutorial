@@ -11,7 +11,8 @@ from api.views import (
     UserCreateView,
     MyTokenObtainPairView,
 
-    CartOrderCreateView
+    CartOrderCreateView,
+    #createCartAddOrders
 )
 
 #from rest_framework_simplejwt.views import TokenObtainPairView
@@ -33,4 +34,5 @@ urlpatterns = [
 
     # Cart
     path('cart/add/', CartOrderCreateView.as_view(), name='cart-order-add')
+    #path('cart/add/', createCartAddOrders, name='cart-order-add')
 ]
