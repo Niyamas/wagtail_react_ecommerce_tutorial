@@ -112,6 +112,7 @@ class CartSerializerOLD(serializers.Serializer):
 
     def get_user(self, obj):
         """Returns the user data. Obj = user object?"""
+        print('OH MY WOW LANTA THE obj:', obj)
         user = obj.user
         serializer = UserSerializer(data=user, many=False)
         #return serializer.data
@@ -158,22 +159,22 @@ class CartSerializer(serializers.Serializer):
 
     def get_user(self, obj):
         """Returns the user data. Obj = user object?"""
-        print('obj:', obj)
+        print('OH MY WOW LANTA THE obj:', obj)
         #print('self:', self.data['user'])
-        user = obj.user
-        serializer = UserSerializer(user, many=False)
-        return serializer.data
+        #user = obj.user
+        #serializer = UserSerializer(data=user, many=False)
+        #return serializer.data
 
     def get_orders(self, obj):
         """Returns the customer's orders in their cart. Obj = orders object?"""
         items = obj.order_set.all()
-        serializer = OrderSerializer(items, many=True)
+        serializer = OrderSerializer(data=items, many=True)
         return serializer.data
 
     def get_shipping_address(self, obj):
         """Returns the customer's shipping address if it exists. Obj = shipping_address obj?"""
         try:
-            address = ShippingAddressSerializer(obj.shipping_address, many=False)
+            address = ShippingAddressSerializer(data=obj.shipping_address, many=False)
         except:
             address = False
         return address
@@ -202,7 +203,7 @@ class OrderSerializer(serializers.Serializer):
 
     def get_cart(self, obj):
         cart = obj.cart
-        serializer = CartSerializer(cart, many=False)
+        serializer = CartSerializer(data=cart, many=False)
         return serializer.data
 
     def create(self, validated_data):
@@ -224,8 +225,9 @@ class ShippingAddressSerializer(serializers.Serializer):
     def get_cart(self, obj):
         """"""
         cart = obj.cart
-        serializer = CartSerializer(cart, many=False)
+        serializer = CartSerializer(data=cart , many=False)
         return serializer.data
+
 
     def create(self, validated_data):
         """

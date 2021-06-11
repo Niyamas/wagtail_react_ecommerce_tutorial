@@ -244,8 +244,8 @@ class CartOrderCreateView(CreateAPIView):
                 print('cart fields:', cart._meta.fields)
 
             # Return the serialized cart data to the frontend or API page.
-            serializer = CartSerializer(cart, many=False)
-            #serializer.is_valid(raise_exception=True)
+            serializer = CartSerializer(data=cart, many=False)
+            serializer.is_valid()
             return Response(serializer.data)
 
 
