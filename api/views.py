@@ -165,7 +165,7 @@ class CartOrderCreateViewBRICK(CreateAPIView):
             item.save()
 
             # Return the serialized cart data to the frontend or API page.
-            cart_serializer.is_valid(raise_exception=True)
+            #cart_serializer.is_valid(raise_exception=True)
             return Response(cart_serializer.data)
 
 
@@ -233,12 +233,14 @@ class CartOrderCreateView(CreateAPIView):
                 item.quantity_in_stock -= order.quantity
                 item.save()
 
-                print('cart fields:', cart._meta.fields)
+                #print('cart fields:', cart._meta.fields)
 
             # Return the serialized cart data to the frontend or API page.
             serializer = CartSerializer(data=cart, many=False)
             serializer.is_valid()
-            print('serializer=', serializer.initial_data)
+            print('Serializer:', serializer)
+            print('Serializer data:', serializer.data)
+            #print('serializer=', serializer.initial_data)
             #print('serializer.data=', serializer.data)
             return Response(serializer.data)
 
