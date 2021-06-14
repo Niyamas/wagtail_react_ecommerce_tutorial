@@ -161,9 +161,9 @@ class CartSerializer(serializers.Serializer):
         """Returns the user data. Obj = user object?"""
         print('OH MY WOW LANTA THE obj:', obj)
         #print('self:', self.data['user'])
-        #user = obj.user
-        #serializer = UserSerializer(data=user, many=False)
-        #return serializer.data
+        user = obj.user
+        serializer = UserSerializer(data=user, many=False)
+        return serializer.data
 
     def get_orders(self, obj):
         """Returns the customer's orders in their cart. Obj = orders object?"""
@@ -184,6 +184,37 @@ class CartSerializer(serializers.Serializer):
         Adds create write functionality to the cart serializer
         """
         return Cart.objects.create(**validated_data)
+
+
+class CartSerializerTest(serializers.ModelSerializer):
+    """"""
+    orders = serializers.SerializerMethodField(read_only=True)
+    shipping_address = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def get_user(self, obj):
+        """Returns the user data. Obj = user object?"""
+        user = obj.user
+        serializer = UserSerializer(data=user, many=False)
+        return serializer.data
+
+    def get_orders(self, obj):
+        """Returns the customer's orders in their cart. Obj = orders object?"""
+        items = obj.order_set.all()
+        serializer = OrderSerializer(data=items, many=True)
+        return serializer.data
+
+    def get_shipping_address(self, obj):
+        """Returns the customer's shipping address if it exists. Obj = shipping_address obj?"""
+        try:
+            address = ShippingAddressSerializer(data=obj.shipping_address, many=False)
+        except:
+            address = False
+        return address
+
 
 class OrderSerializer(serializers.Serializer):
     """"""

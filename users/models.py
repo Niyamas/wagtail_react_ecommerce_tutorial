@@ -171,6 +171,7 @@ class ShippingAddress(models.Model):
         blank=True,
         null=True
     )
+    # @ todo: delete after
     shipping_price = models.DecimalField(
         max_digits=7,
         decimal_places=2,

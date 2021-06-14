@@ -18,6 +18,8 @@ function PlaceOrderScreen({ history }) {
     const orderCreate = useSelector( (state) => state.orderCreate )
     const { order, success, error } = orderCreate
 
+    //console.log('order', order)
+
     // From Redux. Enables action dispatch.
     const dispatch = useDispatch()
 
@@ -48,11 +50,14 @@ function PlaceOrderScreen({ history }) {
 
         if (success) {
 
+            console.log('order2', order)
+
             // After clicking the button, reset the orderCreate state variable.
             dispatch({ type: ORDER_CREATE_RESET })
             
             history.push(`/order/${order.id}`)
         }
+
     }, [success, history])
 
     // Handles the logic after user clicks on the place order button.

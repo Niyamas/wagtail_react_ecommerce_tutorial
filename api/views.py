@@ -175,6 +175,7 @@ class CartOrderCreateView(CreateAPIView):
     Test
     """
     serializer_class = CartSerializer
+    #permission_classes = [IsAuthenticated]
     
     def create(self, request, *args, **kwargs):
 
@@ -219,15 +220,6 @@ class CartOrderCreateView(CreateAPIView):
             for order in orders:
                 item = ItemDetailPage.objects.all().get(id=order['id'])
 
-                order_data = {
-                    'item': item,
-                    'image': item.image.file.url,   # @ todo, see if this serializes correctly the URL.
-                    'cart': cart,
-                    'name': item.title,
-                    'quantity': order['quantity'],
-                    'price': order['price'],
-                }
-
                 order = Order.objects.create(
                     item=item,
                     image=item.image.file.url,
@@ -246,6 +238,8 @@ class CartOrderCreateView(CreateAPIView):
             # Return the serialized cart data to the frontend or API page.
             serializer = CartSerializer(data=cart, many=False)
             serializer.is_valid()
+            print('serializer=', serializer.initial_data)
+            #print('serializer.data=', serializer.data)
             return Response(serializer.data)
 
 
