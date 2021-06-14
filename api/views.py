@@ -17,17 +17,17 @@ from rest_framework.generics import (
     CreateAPIView,
 )
 
-from api.serializers.user.user_serializers import (
+from api.serializers import (
     ReviewSerializer,
     UserSerializer,
     UserSerializerWithToken
 )
 
-from api.serializers.item.item_serializers import (
+from api.serializers import (
     ItemSerializer
 )
 
-from api.serializers.cart.cart_serializers import (
+from api.serializers import (
     ShippingAddressSerializer,
     OrderSerializer,
     CartSerializer

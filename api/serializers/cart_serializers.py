@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from ..user.user_serializers import (
+from api.serializers import (
     UserSerializer
 )
 
