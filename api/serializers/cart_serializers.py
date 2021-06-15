@@ -8,7 +8,7 @@ from rest_framework.relations import PrimaryKeyRelatedField
 
 from api.serializers.user_serializers import UserSerializer
 
-from users.models import Cart, Order
+from users.models import Cart, Order, ShippingAddress
 from items.models import ItemDetailPage
 
 
@@ -21,6 +21,12 @@ class ShippingAddressSerializer(serializers.Serializer):
     city = serializers.CharField(max_length=100)
     postal_code = serializers.CharField(max_length=10, required=False)
     country = serializers.CharField(max_length=100)
+
+    def create(self, validated_data):
+        """
+        Adds create write functionality to the cart serializer
+        """
+        return ShippingAddress.objects.create(**validated_data)
 
 class OrderSerializer(serializers.Serializer):
     """Order serializer."""
@@ -43,17 +49,21 @@ class CartSerializer(serializers.Serializer):
     """Cart serializer."""
 
     id = serializers.IntegerField(read_only=True)
-    user = UserSerializer(many=False)
-    orders = OrderSerializer(many=True)
-    ShippingAddress = ShippingAddressSerializer(many=False)
+    #user = UserSerializer(many=False)
+    #user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    orders = OrderSerializer(many=True, required=False)
+    shipping_address = ShippingAddressSerializer(many=False, required=False)
+    #shipping_address = PrimaryKeyRelatedField(many=False)
     payment_method = serializers.CharField(max_length=100)
     shipping_price = serializers.DecimalField(max_digits=7, decimal_places=2)
     tax_price = serializers.DecimalField(max_digits=7, decimal_places=2)
+    #items_price = serializers.DecimalField(max_digits=7, decimal_places=2)
     total_price = serializers.DecimalField(max_digits=7, decimal_places=2)
     is_paid = serializers.BooleanField(required=False)
-    paid_at = serializers.DateTimeField(required=False)
+    paid_at = serializers.DateTimeField(required=False, allow_null=True)
     is_delivered = serializers.BooleanField(required=False)
-    delivered_at = serializers.DateTimeField(required=False)
+    delivered_at = serializers.DateTimeField(required=False, allow_null=True)
     created_at = serializers.DateTimeField(required=False)
 
     def create(self, validated_data):

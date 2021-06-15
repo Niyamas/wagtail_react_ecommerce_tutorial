@@ -6,6 +6,8 @@ import {
     ORDER_CREATE_FAIL
 } from '../constants/orderConstants'
 
+import { CART_CLEAR_ITEMS } from '../constants/cartConstants'
+
 import { csrftoken } from '../components/shared/Csrf'
 
 
@@ -31,6 +33,8 @@ export const createOrder = (order) => async (dispatch, getState) => {
             }
         }
 
+        //console.log('Sending post request...', 'Csrftoken:', '| Authorization:', `Bearer ${userInfo.token}`)
+
         // Update the user data and store that in a variable 'data', which is fetched from the API via axios.
         // API takes in name, email and password.
         const { data } = await axios.post(
@@ -38,12 +42,24 @@ export const createOrder = (order) => async (dispatch, getState) => {
             order,
             config
         )
+        .catch( (error) => console.log('axios post error:', error))
+
+        //console.log('Returned data:', data)
 
         // Get the user data after making the API profile update call. Calls the reducer to update the state.
         dispatch({
             type: ORDER_CREATE_SUCCESS,
             payload: data
         })
+
+        // After user has payed for the cart, clear it from the state.
+        dispatch({
+            type: CART_CLEAR_ITEMS,
+            payload: data
+        })
+
+        // Remove the cart data from the local storage too.
+        localStorage.removeItem('cartItems')
 
     }
     catch (error) {
