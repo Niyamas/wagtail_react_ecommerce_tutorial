@@ -50,6 +50,8 @@ export const login = (email, password) => async (dispatch) => {
             config
         )
 
+        console.log('login data:', data)
+
         // Get the user data after making the API login call.
         dispatch({
             type: USER_LOGIN_SUCCESS,
@@ -115,9 +117,11 @@ export const register = (name, email, password) => async (dispatch) => {
         // is given, leave last_name blank and fill in first_name.
         const {data} = await axios.post(
             'http://localhost:8000/api/v1/users/register/',
-            {'name': name, 'email': email, 'password': password },
+            { 'name': name, 'email': email, 'password': password },
             config
         )
+
+        console.log('register data = ', data)
 
         // Get the user data after making the API login call.
         dispatch({

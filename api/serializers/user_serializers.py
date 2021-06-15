@@ -26,25 +26,31 @@ class UserSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     username = serializers.CharField(max_length=150)
     email = serializers.EmailField()
-    #name = serializers.SerializerMethodField(
-    #    read_only=True
-    #)
     first_name = serializers.CharField(max_length=150)
-    last_name = serializers.CharField(max_length=150, required=False)
+    last_name = serializers.CharField(max_length=150, allow_blank=True, allow_null=True)
+    password = serializers.CharField(write_only=True)
     is_admin = serializers.SerializerMethodField(read_only=True)
 
-    def get_is_admin(self, user_obj):
-        return user_obj.is_staff
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'is_admin',)
+
+    def get_is_admin(self, obj):
+        print('user_obj:', obj)
+        return obj.is_staff
+
+    def create(self, validated_data):
+        return User.objects.create(**validated_data)
 
 class UserSerializerWithToken(UserSerializer):
     """
     Inherits from UserSerializer and includes a create method for registering new users.
     """
-    username = serializers.CharField(max_length=150)
-    email = serializers.EmailField()
-    first_name = serializers.CharField(max_length=150)
-    last_name = serializers.CharField(max_length=150, required=False)
     token = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'is_admin', 'token',)
 
     def get_token(self, user_obj):
         token = RefreshToken.for_user(user_obj)

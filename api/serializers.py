@@ -134,7 +134,6 @@ class ShippingAddressSerializer(serializers.Serializer):
         serializer = CartSerializer(data=cart , many=False)
         return serializer.data
 
-
     def create(self, validated_data):
         """
         Adds create write functionality to the cart serializer

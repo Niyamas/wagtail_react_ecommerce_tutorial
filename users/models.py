@@ -3,6 +3,13 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
+# Make last name not required
+User._meta.get_field('last_name').blank = True
+User._meta.get_field('last_name').null = True
+
+# Make email field unique
+User._meta.get_field('email')._unique = True
+
 class Review(models.Model):
     """"""
 

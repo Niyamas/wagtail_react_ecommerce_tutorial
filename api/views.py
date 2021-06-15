@@ -17,17 +17,17 @@ from rest_framework.generics import (
     CreateAPIView,
 )
 
-from api.serializers import (
+from api.serializers.user_serializers import (
     ReviewSerializer,
     UserSerializer,
     UserSerializerWithToken
 )
 
-from api.serializers import (
+from api.serializers.item_serializers import (
     ItemSerializer
 )
 
-from api.serializers import (
+from api.serializers.cart_serializers import (
     ShippingAddressSerializer,
     OrderSerializer,
     CartSerializer
@@ -151,13 +151,13 @@ def updateUserProfile(request):
         user.save()
         return Response(serializer.data)
 
-#@permission_classes([IsAdminUser])
 class UserListView(ListAPIView):
     """
     Returns a list of users. Only admins can view it.
     """
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    #permission_classes = [IsAdminUser]
 
 class UserCreateView(CreateAPIView):
     serializer_class = UserSerializerWithToken
@@ -169,8 +169,10 @@ class UserCreateView(CreateAPIView):
         It will fill out the first_name and last_name if there are 2 names given.
         If one is given, set that name as the first name
         """
+        print('password: ', request.data['password'])
 
         # If the user has put in two names, separate it into first_name and last_name and save that data.
+        # @todo: Registering a user with 2 names works, but one name does not. Returns "user with this email already exists."???
         try:
             first_name = request.data['name'].split()[0]
             last_name = request.data['name'].split()[1]
@@ -197,6 +199,7 @@ class UserCreateView(CreateAPIView):
                 self.perform_create(serializer)
                 headers = self.get_success_headers(serializer.data)
                 return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+                #return Response(serializer.data, status=status.HTTP_201_CREATED)
 
             except:
                 message = {'detail': 'User with this email already exists'}
@@ -219,7 +222,7 @@ class UserCreateView(CreateAPIView):
 
 
                 # Serialize the passed in user_data.
-                serializer = self.get_serializer(data=user_data, many=False)
+                serializer = UserSerializerWithToken(data=user_data, many=False)
 
                 # Validate the serialized data.
                 serializer.is_valid(raise_exception=True)
@@ -247,18 +250,26 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Get the fields from the user profile serializer.
         serializer = UserSerializerWithToken(self.user).data
 
-        #data['username'] = self.user.username
-        #data['email'] = self.user.email
-        #data['first_name'] = self.user.first_name
-        #data['last_name'] = self.user.last_name
-        #data['is_admin'] = self.user.is_admin
-
         for fields, values in serializer.items():
             data[fields] = values
 
         print('token:', data)
 
         return data
+
+
+class MyTokenObtainPairSerializers(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['name'] = user.username
+        # ...
+
+        return token
+
+
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
