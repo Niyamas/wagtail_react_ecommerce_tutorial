@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.forms.models import model_to_dict
+from django.utils import timezone
 
 from rest_framework import serializers, status
 from rest_framework.decorators import api_view, permission_classes
@@ -15,7 +16,8 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     ListAPIView,
     CreateAPIView,
-    RetrieveAPIView
+    RetrieveAPIView,
+    UpdateAPIView
 )
 
 from api.serializers.user_serializers import (
@@ -91,7 +93,7 @@ class CartOrderCreateView(CreateAPIView):
     Test
     """
     serializer_class = CartSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
     def create(self, request, *args, **kwargs):
         
@@ -179,6 +181,7 @@ class CartDetailView(RetrieveAPIView):
     """"""
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -195,6 +198,18 @@ class CartDetailView(RetrieveAPIView):
 
         except:
             return Response({'detail': 'Order does not exits'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class CartUpdatePaidView(UpdateAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
+
+
+
+
 
 
 

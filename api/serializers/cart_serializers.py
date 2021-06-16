@@ -52,20 +52,15 @@ class CartSerializer(serializers.Serializer):
     """Cart serializer."""
 
     id = serializers.IntegerField(read_only=True)
-    #user = UserSerializer(many=False)
-    #user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    user = PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
     user_data = serializers.SerializerMethodField(read_only=True)
-    #orders = OrderSerializer(many=True, required=False)
     orders = serializers.SerializerMethodField(read_only=True)
-    #shipping_address = ShippingAddressSerializer(many=False, required=False)
     shipping_address_data = serializers.SerializerMethodField(read_only=True)
-    #shipping_address = PrimaryKeyRelatedField(many=False)
-    payment_method = serializers.CharField(max_length=100)
-    shipping_price = serializers.DecimalField(max_digits=7, decimal_places=2)
-    tax_price = serializers.DecimalField(max_digits=7, decimal_places=2)
+    payment_method = serializers.CharField(max_length=100, required=False)
+    shipping_price = serializers.DecimalField(max_digits=7, decimal_places=2, required=False)
+    tax_price = serializers.DecimalField(max_digits=7, decimal_places=2, required=False)
     #items_price = serializers.DecimalField(max_digits=7, decimal_places=2)
-    total_price = serializers.DecimalField(max_digits=7, decimal_places=2)
+    total_price = serializers.DecimalField(max_digits=7, decimal_places=2, required=False)
     is_paid = serializers.BooleanField(required=False)
     paid_at = serializers.DateTimeField(required=False, allow_null=True)
     is_delivered = serializers.BooleanField(required=False)
@@ -99,3 +94,9 @@ class CartSerializer(serializers.Serializer):
         Adds create write functionality to the cart serializer
         """
         return Cart.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.is_paid = validated_data.get('is_paid', instance.is_paid)
+        instance.paid_at = validated_data.get('paid_at', instance.paid_at)
+        instance.save()
+        return instance

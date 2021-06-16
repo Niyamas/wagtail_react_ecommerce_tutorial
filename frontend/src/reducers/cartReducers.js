@@ -1,7 +1,6 @@
 // Reducers initiate the state and changes the state according to the actions
 // it receives from the actions that were dispatched.
 
-
 import {
     CART_ADD_ITEM,
     CART_REMOVE_ITEM,
