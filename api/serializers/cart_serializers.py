@@ -45,6 +45,9 @@ class OrderSerializer(serializers.Serializer):
         """
         return Order.objects.create(**validated_data)
 
+
+from django.forms.models import model_to_dict
+
 class CartSerializer(serializers.Serializer):
     """Cart serializer."""
 
@@ -52,8 +55,11 @@ class CartSerializer(serializers.Serializer):
     #user = UserSerializer(many=False)
     #user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     user = PrimaryKeyRelatedField(queryset=User.objects.all())
-    orders = OrderSerializer(many=True, required=False)
-    shipping_address = ShippingAddressSerializer(many=False, required=False)
+    user_data = serializers.SerializerMethodField(read_only=True)
+    #orders = OrderSerializer(many=True, required=False)
+    orders = serializers.SerializerMethodField(read_only=True)
+    #shipping_address = ShippingAddressSerializer(many=False, required=False)
+    shipping_address_data = serializers.SerializerMethodField(read_only=True)
     #shipping_address = PrimaryKeyRelatedField(many=False)
     payment_method = serializers.CharField(max_length=100)
     shipping_price = serializers.DecimalField(max_digits=7, decimal_places=2)
@@ -65,6 +71,28 @@ class CartSerializer(serializers.Serializer):
     is_delivered = serializers.BooleanField(required=False)
     delivered_at = serializers.DateTimeField(required=False, allow_null=True)
     created_at = serializers.DateTimeField(required=False)
+
+    def get_user_data(self, obj):
+        user = model_to_dict(obj.user)
+        serializer = UserSerializer(data=user, many=False)
+        serializer.is_valid()
+        return serializer.data
+
+    def get_orders(self, obj):
+        items = obj.order_set.all()
+        serializer = OrderSerializer(data=items, many=True)
+        serializer.is_valid()
+        return serializer.data
+
+    def get_shipping_address_data(self, obj):
+        try:
+            address = model_to_dict(obj.shippingaddress)
+            serializer = ShippingAddressSerializer(data=address, many=False)
+            serializer.is_valid()
+            serializer = serializer.data
+        except:
+            serializer = False
+        return serializer
 
     def create(self, validated_data):
         """

@@ -1,0 +1,2 @@
+The views_new folder is a way to organize the views into their own sections. It takes extra time to
+perform tests after moving everything around, so wait until the project is finished before proceeding.
