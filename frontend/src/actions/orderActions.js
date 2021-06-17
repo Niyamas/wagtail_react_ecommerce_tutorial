@@ -115,7 +115,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
             `http://localhost:8000/api/v1/cart/${id}/`,
             config
         )
-        .catch( (error) => console.log('axios post error:', error))
+        .catch( (error) => console.log('axios get error:', error))
 
         // Get the user data after making the API profile update call. Calls the reducer to update the state.
         dispatch({

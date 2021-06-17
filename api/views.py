@@ -312,7 +312,7 @@ class UserListView(ListAPIView):
     """
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    #permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
 
 class UserCreateView(CreateAPIView):
     """

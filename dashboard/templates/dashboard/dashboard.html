@@ -5,6 +5,9 @@
 {% block titletag %}{{ title }}{% endblock %}
 {% block bodyclass %}Dashboard{% endblock %}
 
+{% comment %} Preload scripts. @ todo: Can we move this to the header? {% endcomment %}
+<link rel="preload" as="script" href="{% static 'dashboard/js/dashboard.js' %}">
+
 
 {% block content %}
 
@@ -35,5 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
     )
 });
 </script>
+
+{% comment %} Axios CDN {% endcomment %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+<script defer type="text/javascript" src="{% static 'dashboard/js/dashboard.js' %}"></script>
 
 {% endblock %}
