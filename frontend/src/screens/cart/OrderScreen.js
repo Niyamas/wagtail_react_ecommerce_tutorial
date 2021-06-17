@@ -8,6 +8,7 @@ import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import Message from '../../components/shared/Message'
 import Loader from '../../components/shared/Loader'
 import { domainURL } from '../../constants/domainConstants'
+import { ORDER_PAY_RESET } from '../../constants/orderConstants'
 
 import { getOrderDetails, payOrder } from '../../actions/orderActions'
 
@@ -60,6 +61,11 @@ function PlaceOrderScreen({ match }) {
         // If order doesn't exist or the order ID in the URl doesn't match
         // what's in the state, get the cart details. (order refers to the cart that was ordered)
         if (!order || order.id !== Number(orderId) || successPay) {
+
+            // Clear the orderPay state variable. 
+            dispatch({ type: ORDER_PAY_RESET })
+
+            // Fetch cart details.
             dispatch(getOrderDetails(orderId))
         }
         // Show paypal buttons if the order is not paid.
@@ -209,7 +215,7 @@ function PlaceOrderScreen({ match }) {
                             !order.is_paid && (
                                 <ListGroup.Item>
                                     {
-                                        !loadingPay && <Loader />
+                                        loadingPay && <Loader />
                                     }
                                     {
                                         !sdkReady ? (
@@ -218,24 +224,13 @@ function PlaceOrderScreen({ match }) {
                                             <PayPalButton 
                                                 amount={order.total_price}
                                                 onSuccess={successPaymentHandler}
+                                                
                                             />
                                         )
                                     }
                                 </ListGroup.Item>
                             )
                         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
