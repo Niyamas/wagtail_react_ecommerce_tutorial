@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react'
 //import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Table } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 
 import Loader from '../../components/shared/Loader'
 import Message from '../../components/shared/Message'
 
 import { getUserDetails, updateUserProfile } from '../../actions/userActions'
+import { listMyOrders } from '../../actions/orderActions'
 
 import { USER_UPDATE_PROFILE_RESET } from '../../constants/userConstants'
+import { domainURL } from '../../constants/domainConstants'
 
 
 function ProfileScreen({ history }) {
@@ -38,6 +41,10 @@ function ProfileScreen({ history }) {
     const userUpdateProfile = useSelector( (state) => state.userUpdateProfile )
     const { success } = userUpdateProfile
 
+    // Get nested state variables within the parent orderListMy state variable.
+    const orderListMy = useSelector( (state) => state.orderListMy )
+    const { loading:loadingOrders, error:errorOrders, orders } = orderListMy
+
     // Trigger state change when history, userInfo, or redirect changes.
     useEffect( () => {
 
@@ -55,10 +62,12 @@ function ProfileScreen({ history }) {
 
                 // Resets the profile
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
-                console.log('running USER_UPDATE_PROFILE_RESET...')
 
                 // idOrPage is part of URL: /api/v1/users/${idOrPage}/, which is 'profile'.
                 dispatch(getUserDetails('profile'))
+
+                // Dispatch action to pull from the API a list of the customer's carts and orders.
+                dispatch(listMyOrders())
             }
             else {
 
@@ -168,6 +177,52 @@ function ProfileScreen({ history }) {
 
             <Col md={3}>
                 <h2>My Orders</h2>
+                {
+                    loadingOrders ? (
+                        <Loader />
+                    ) : (
+                        errorOrders ? (
+                            <Message variant="danger">{errorOrders}</Message>
+                        ) : (
+                            <Table striped responsive className="table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Date</th>
+                                        <th>Total</th>
+                                        <th>Payed</th>
+                                        <th>Delivered</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {
+                                        orders.map( (order) => (
+                                            <tr key={order.id}>
+                                                <td>{order.id}</td>
+                                                <td>{order.created_at.substring(0, 10)}</td>
+                                                <td>${order.total_price}</td>
+                                                <td>
+                                                    {
+                                                        order.is_paid ? order.paid_at.substring(0, 10) : (
+                                                            <i className="fas fa-times" style={{ color: 'red' }}></i>
+                                                        )
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <LinkContainer to= {`/order/${order.id}`}>
+                                                        <Button className="btn-sm">Details</Button>
+                                                    </LinkContainer>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </Table>
+                        )
+                    )
+                }
             </Col>
         </Row>
 

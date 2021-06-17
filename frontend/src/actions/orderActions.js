@@ -13,6 +13,11 @@ import {
     ORDER_PAY_SUCCESS,
     ORDER_PAY_FAIL,
     ORDER_PAY_RESET,
+
+    ORDER_LIST_MY_REQUEST,
+    ORDER_LIST_MY_SUCCESS,
+    ORDER_LIST_MY_FAIL,
+    ORDER_LIST_MY_RESET,
 } from '../constants/orderConstants'
 
 import { CART_CLEAR_ITEMS } from '../constants/cartConstants'
@@ -173,6 +178,56 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
         // Start product reducer with the specified case type
         dispatch({
             type: ORDER_PAY_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail
+            : error.message,
+        })
+
+    }
+}
+
+
+
+export const listMyOrders = () => async (dispatch, getState) => {
+
+    try {
+
+        // userReducers.js case
+        dispatch({
+            type: ORDER_LIST_MY_REQUEST
+        })
+
+        // Get from the state userInfo, which will get the JWT access token in the config variable.
+        const { userLogin: { userInfo } } = getState()
+
+        // Send additional headers data to the API call.
+        const config = {
+
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrftoken,
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        // Get order/cart data from a created cart.
+        const { data } = await axios.get(
+            `http://localhost:8000/api/v1/my-orders/`,
+            config
+        )
+        .catch( (error) => console.log('axios post error:', error))
+
+        // Get the user data after making the API profile update call. Calls the reducer to update the state.
+        dispatch({
+            type: ORDER_LIST_MY_SUCCESS,
+            payload: data
+        })
+
+    }
+    catch (error) {
+
+        // Start product reducer with the specified case type
+        dispatch({
+            type: ORDER_LIST_MY_FAIL,
             payload: error.response && error.response.data.detail ? error.response.data.detail
             : error.message,
         })

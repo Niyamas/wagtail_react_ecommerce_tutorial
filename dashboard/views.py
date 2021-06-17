@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-# Create your views here.
+
+class DashBoardView(TemplateView):
+    """
+    Renders the Dashboard page in the admin.
+    """
+
+    template_name = 'dashboard/dashboard.html'

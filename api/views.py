@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.db.models import query
 from django.forms.models import model_to_dict
 from django.utils import timezone
 
@@ -90,7 +91,9 @@ class ItemDetailListView(RetrieveUpdateDestroyAPIView):
 
 class CartOrderCreateView(CreateAPIView):
     """
-    Test
+    When the user clicks on the place order (before payment), it will
+    create a cart, order, and shipping address object for the user in
+    the database.
     """
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
@@ -178,17 +181,18 @@ class CartOrderCreateView(CreateAPIView):
             return Response(serializer.data)
 
 class CartDetailView(RetrieveAPIView):
-    """"""
+    """
+    Retrieves cart data for the current logged-in user.
+    """
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         user = request.user
+        #user = User.objects.get(id=1)  # Testing
 
         cart = self.get_object()
-
-        #return self.retrieve(request, *args, **kwargs)
 
         try:
             if user.is_staff or cart.user == user:
@@ -199,13 +203,31 @@ class CartDetailView(RetrieveAPIView):
         except:
             return Response({'detail': 'Order does not exits'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
-class CartUpdatePaidView(UpdateAPIView):
+class CartCustomerListView(ListAPIView):
+    """
+    Gets a list of carts for the current logged-in customer.
+    Used in the profile "My Orders" section.
+    """
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
+        user = request.user
+        carts = user.cart_set.all()
+        serializer = CartSerializer(carts, many=True)
+        return Response(serializer.data)
+
+class CartUpdatePaidView(UpdateAPIView):
+    """
+    When the user pays for their order via PayPal, update
+    two fields in their cart:
+    1) is_paid = True
+    2) paid_at = current datetime
+    """
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -293,6 +315,11 @@ class UserListView(ListAPIView):
     #permission_classes = [IsAdminUser]
 
 class UserCreateView(CreateAPIView):
+    """
+    A view for creating/registering users. If two names are provided,
+    set those as first_name and last_name. If there's one name, save it
+    as first_name and leave last_name blank.
+    """
     serializer_class = UserSerializerWithToken
     queryset = User.objects.all()
 
@@ -389,11 +416,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         #print('token:', data)
 
         return data
-
-
-
-
-
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer

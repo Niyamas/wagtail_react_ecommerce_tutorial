@@ -1,0 +1,39 @@
+{% extends "wagtailadmin/base.html" %}
+{% load static %}
+
+
+{% block titletag %}{{ title }}{% endblock %}
+{% block bodyclass %}Dashboard{% endblock %}
+
+
+{% block content %}
+
+{% include "wagtailadmin/shared/header.html" with title=title %}
+
+<div id="dashboard">{{ title }}</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+{{ block.super }}
+<script>
+// templates/timeline/timeline.html
+document.addEventListener('DOMContentLoaded', function() {
+
+    ReactDOM.render(
+
+        React.createElement(
+            'div',
+            {
+                children: 'DASHBOARD CONTENT HERE',
+                className: 'dashboard-content'
+            }
+        ),
+        document.getElementById('dashboard')
+    )
+});
+</script>
+
+{% endblock %}

@@ -23,6 +23,8 @@ import {
     //USER_UPDATE_PROFILE_RESET
 } from '../constants/userConstants'
 
+import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
+
 import { csrftoken } from '../components/shared/Csrf'
 
 
@@ -91,6 +93,11 @@ export const logout = () => (dispatch) => {
     // information will be displayed in the profile of the new logged in user!
     dispatch({
         type: USER_DETAILS_RESET
+    })
+
+    // Clear the orders variable from the orderListMy state variable.
+    dispatch({
+        type: ORDER_LIST_MY_RESET
     })
 }
 

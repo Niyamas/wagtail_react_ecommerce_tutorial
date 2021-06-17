@@ -4,10 +4,24 @@
 {% block fields %}
 
 <li class="full">
-    <div class="field iconfield">
+{% comment %}     <div class="field iconfield">
         {{ form.username.label_tag }}
         <div class="input icon-mail">
             {{ form.username }}
+        </div>
+    </div> {% endcomment %}
+
+    {% comment %} Replace placeholder input with "Enter your email" instead of username {% endcomment %}
+    <div class="field iconfield">
+        <div class="input icon-mail">
+            <input
+                id="id_username"
+                type="text"
+                name="username"
+                maxlength=150
+                placeholder="Enter your email"
+                required=""
+            >
         </div>
     </div>
 </li>

@@ -67,6 +67,7 @@ class CartSerializer(serializers.Serializer):
     created_at = serializers.DateTimeField(required=False)
 
     def get_user_data(self, obj):
+        print('cart obj?? = ', obj)
         user = model_to_dict(obj.user)
         serializer = UserSerializer(data=user, many=False)
         serializer.is_valid()
