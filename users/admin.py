@@ -39,10 +39,27 @@ class CartAdmin(ModelAdmin):
     exclude_from_explorer = False
     inspect_view_enabled = True
 
-    list_display = ('id', 'user', 'payment_method', 'tax_price', 'shipping_price', 'total_price', 'is_paid', 'paid_at', 'is_delivered', 'delivered_at', 'created_at',)
-    search_fields = ('id', 'user', 'payment_method',)
+    list_display = ('user', 'payment_method', 'cart_items', 'tax_price', 'shipping_price', 'total_price', 'is_paid', 'paid_at', 'shipping_address', 'is_delivered', 'delivered_at', 'created_at',)
+    search_fields = ('user', 'payment_method',)
     list_filter = ('is_paid', 'is_delivered',)
 
+    def cart_items(self, obj):
+        order_list = []
+        for order in obj.order_set.all():
+            try:
+                order_details = str(order.quantity) + 'x ' + str(order.item.title)
+                order_list.append(order_details)
+            except:
+                order_details = '-'
+                order_list.append(order_details)
+        return ', '.join(order_list)
+
+    def shipping_address(self, obj):
+        address = ShippingAddress.objects.all().get(cart=obj.id)
+        print('address_obj = ', address)
+
+        full_address = address.address + ', ' + address.city + ' ' + address.postal_code + ', ' + address.country
+        return full_address
 
 class OrderAdmin(ModelAdmin):
     """Registers the Order model in the Wagtail admin."""

@@ -1,10 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from django.db.models import query
-from django.forms.models import model_to_dict
 from django.utils import timezone
 
-from rest_framework import serializers, status
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
@@ -22,12 +20,12 @@ from rest_framework.generics import (
 )
 
 from api.serializers.user_serializers import (
-    ReviewSerializer,
     UserSerializer,
     UserSerializerWithToken
 )
 
 from api.serializers.item_serializers import (
+    ReviewSerializer,
     ItemSerializer
 )
 
@@ -118,14 +116,6 @@ class CartOrderCreateView(CreateAPIView):
         else:
 
             ### (1) Create cart. Boolean values will be updated later.
-            # Create new Cart object from the data given from the frontend.
-            """ cart = Cart.objects.create(
-                user=user,
-                payment_method=data['payment_method'],
-                shipping_price=data['shipping_price'],
-                tax_price=data['tax_price'],
-                total_price=data['total_price']
-            ) """
 
             cart_data = {
                 'user': user.id,
@@ -137,14 +127,10 @@ class CartOrderCreateView(CreateAPIView):
 
             #print('cart data = ', cart.user)
 
+            # Validate the serialized data, and store the output data.
             serializer = CartSerializer(data=cart_data, many=False)
             serializer.is_valid(raise_exception=True)
             cart_serialized_obj = serializer.save()
-
-            print('serialized cart data = ', cart_serialized_obj)
-
-            #self.perform_create(serializer)
-
 
             ### (2) Create shipping address
             # Create new ShippingAddress object from the frontend data.
@@ -158,6 +144,7 @@ class CartOrderCreateView(CreateAPIView):
 
             # (3) Create orders and assign each order to the new cart.
             for order in orders:
+                # @ todo: will this be faster if I remove the all() part of this query?
                 item = ItemDetailPage.objects.all().get(id=order['id'])
 
                 order = Order.objects.create(
@@ -251,6 +238,67 @@ class CartUpdatePaidView(UpdateAPIView):
 
 
 """User API Views"""
+
+class ReviewCreateView(CreateAPIView):
+    """"""
+    serializer_class = ReviewSerializer
+    queryset = Review.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, pk, *args, **kwargs):
+        user = request.user
+        data = request.data
+        item = ItemDetailPage.objects.get(id=pk)
+
+        ### 1) Review already exists.
+
+        # Does a user have a review already for this item?
+        already_exists = item.review_set.filter(user=user).exists()
+
+        if already_exists:
+            content = {'details': 'Product already reviewed'}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+        ### 2) No rating or 0.
+        elif data['rating'] == 0:
+            content = {'details': 'Please select a rating'}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+        ### 3) Create review object.
+        else:
+            review_data = {
+                'item': item.id,   # @ todo: use item.id
+                'user': user.id,
+                'name': user.first_name,
+                'rating': data['rating'],
+                'comment': data['comment']
+            }
+
+            # Serialize and save the new review object in the database
+            serializer = ReviewSerializer(data=review_data, many=False)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+
+            reviews = item.review_set.all()
+            item.quantity_reviews = len(reviews)
+
+            # After creating the new review object, recaclulate the item's star rating.
+            total = 0
+            for review in reviews:
+                total += review.rating
+            item.rating = total / len(reviews)
+            item.save()
+
+            return Response( {'detail': 'Review added'} )
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

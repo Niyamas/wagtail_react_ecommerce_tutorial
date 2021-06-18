@@ -1,8 +1,28 @@
 """Item Serializers"""
 
+from django.contrib.auth.models import User
+
+from users.models import Review
 from rest_framework import serializers
 from rest_framework.relations import PrimaryKeyRelatedField
 
+from users.models import (
+    Review
+)
+from items.models import ItemDetailPage
+
+class ReviewSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    item = PrimaryKeyRelatedField(queryset=ItemDetailPage.objects.all())
+    user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    name = serializers.CharField()
+    rating = serializers.IntegerField()
+    comment = serializers.CharField(max_length=2000, required=False, allow_blank=True)
+    created_at = serializers.DateTimeField(required=False)
+
+    def create(self, validated_data):
+        """Adds create functionality to the Review model."""
+        return Review.objects.all().create(**validated_data)
 
 class ImageSerializer(serializers.Serializer):
     """Nested image serializer included in the ItemDetailSerializer."""
@@ -24,3 +44,9 @@ class ItemSerializer(serializers.Serializer):
     quantity_in_stock = serializers.IntegerField()
     rating = serializers.DecimalField(read_only=True, max_digits=7, decimal_places=2)
     quantity_reviews = serializers.IntegerField(read_only=True)
+    review_data = serializers.SerializerMethodField(read_only=True)
+
+    def get_review_data(self, obj):
+        reviews = obj.review_set.all()
+        serializer = ReviewSerializer(reviews, many=True)
+        return serializer.data

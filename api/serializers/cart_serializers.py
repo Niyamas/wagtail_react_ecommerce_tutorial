@@ -45,9 +45,6 @@ class OrderSerializer(serializers.Serializer):
         """
         return Order.objects.create(**validated_data)
 
-
-from django.forms.models import model_to_dict
-
 class CartSerializer(serializers.Serializer):
     """Cart serializer."""
 
@@ -67,23 +64,19 @@ class CartSerializer(serializers.Serializer):
     created_at = serializers.DateTimeField(required=False)
 
     def get_user_data(self, obj):
-        print('cart obj?? = ', obj)
-        user = model_to_dict(obj.user)
-        serializer = UserSerializer(data=user, many=False)
-        serializer.is_valid()
+        user = obj.user
+        serializer = UserSerializer(user, many=False)
         return serializer.data
 
     def get_orders(self, obj):
         items = obj.order_set.all()
-        serializer = OrderSerializer(data=items, many=True)
-        serializer.is_valid()
+        serializer = OrderSerializer(items, many=True)
         return serializer.data
 
     def get_shipping_address_data(self, obj):
         try:
-            address = model_to_dict(obj.shippingaddress)
-            serializer = ShippingAddressSerializer(data=address, many=False)
-            serializer.is_valid()
+            address = obj.shippingaddress
+            serializer = ShippingAddressSerializer(address, many=False)
             serializer = serializer.data
         except:
             serializer = False

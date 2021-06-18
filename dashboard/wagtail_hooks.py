@@ -24,3 +24,17 @@ def urlconf_time():
     return [
         path('dashboard/', DashBoardView.as_view(), name='admin-dashboard')
     ]
+
+
+
+
+
+
+from django.templatetags.static import static
+from django.utils.html import format_html
+
+
+@hooks.register("insert_global_admin_css", order=100)
+def global_admin_css():
+    """Add /static/css/custom.css to the admin"""
+    return format_html('<link rel="stylesheet" href="{}">', static("dashboard/css/custom.css"))

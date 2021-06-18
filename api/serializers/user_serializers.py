@@ -3,24 +3,11 @@
 from django.contrib.auth.models import User
 
 from rest_framework import serializers
-from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # DRF Simple JWT: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/customizing_token_claims.html
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from users.models import (
-    Review
-)
-
-
-class ReviewSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    item = PrimaryKeyRelatedField(read_only=True)
-    user = PrimaryKeyRelatedField(read_only=True)
-    name = serializers.CharField(read_only=True)
-    rating = serializers.IntegerField(read_only=True)
-    comment = serializers.CharField(read_only=True, max_length=2000, required=False, allow_blank=True)
 
 class UserSerializer(serializers.Serializer):
     """

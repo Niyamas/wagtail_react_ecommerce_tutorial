@@ -40,6 +40,9 @@ class Review(models.Model):
         blank=True,
         null=True
     )
+    created_at = models.DateTimeField(
+        default=timezone.now
+    )
 
     def __str__(self):
         # @todo make it so incoming objects will always be unique?

@@ -10,6 +10,7 @@ from api.views import (
     UserListView,
     UserCreateView,
     MyTokenObtainPairView,
+    ReviewCreateView,
 
     CartOrderCreateView,
     CartDetailView,
@@ -33,6 +34,7 @@ urlpatterns = [
     # Item
     path('items/', ItemListView.as_view(), name='item-list'),
     path('item/<int:pk>/', ItemDetailListView.as_view(), name='item-detail'),
+    path('item/<str:pk>/reviews/', ReviewCreateView.as_view(), name='review-add'),
 
     # Cart
     path('cart/add/', CartOrderCreateView.as_view(), name='cart-order-add'),

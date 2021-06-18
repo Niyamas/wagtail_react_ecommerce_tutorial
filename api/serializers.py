@@ -22,13 +22,6 @@ from items.models import (
 
 
 """User Serializers"""
-class ReviewSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    item = PrimaryKeyRelatedField(read_only=True)
-    user = PrimaryKeyRelatedField(read_only=True)
-    name = serializers.CharField(read_only=True)
-    rating = serializers.IntegerField(read_only=True)
-    comment = serializers.CharField(read_only=True, max_length=2000, required=False, allow_blank=True)
 
 class UserSerializer(serializers.Serializer):
     """
