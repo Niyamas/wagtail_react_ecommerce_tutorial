@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
+import SearchBox from './SearchBox'
+
 import { logout } from '../../actions/userActions'      // Actions -> Reducers -> Change state
 
 function Header() {
@@ -35,6 +37,7 @@ function Header() {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
                     <Navbar.Collapse id="basic-navbar-nav">
+                        <SearchBox />
                         <Nav className="mr-auto">
                             <LinkContainer to="/cart">
                                 <Nav.Link href="/cart"><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>

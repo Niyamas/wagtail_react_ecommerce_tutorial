@@ -256,12 +256,12 @@ class ReviewCreateView(CreateAPIView):
         already_exists = item.review_set.filter(user=user).exists()
 
         if already_exists:
-            content = {'details': 'Product already reviewed'}
+            content = {'detail': 'Product already reviewed'}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
         ### 2) No rating or 0.
         elif data['rating'] == 0:
-            content = {'details': 'Please select a rating'}
+            content = {'detail': 'Please select a rating'}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
 
         ### 3) Create review object.

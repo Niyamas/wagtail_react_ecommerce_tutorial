@@ -6,10 +6,17 @@ import {
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
     PRODUCT_LIST_FAIL,
+
     PRODUCT_DETAILS_REQUEST,
     PRODUCT_DETAILS_SUCCESS,
-    PRODUCT_DETAILS_FAIL
+    PRODUCT_DETAILS_FAIL,
+    
+    PRODUCT_CREATE_REVIEW_REQUEST,
+    PRODUCT_CREATE_REVIEW_SUCCESS,
+    PRODUCT_CREATE_REVIEW_FAIL,
 } from '../constants/productConstants'
+
+import { csrftoken } from '../components/shared/Csrf'
 
 
 // In charge of replacing the API call in the homescreen
@@ -56,6 +63,8 @@ export const listProductDetails = (id) => async (dispatch) => {
         // Fetch the API items data with axios
         const { data } = await axios.get(`http://localhost:8000/api/v1/item/${id}`)
 
+        console.log('List product = ', data)
+
         // Start product reducer with the specified case type
         dispatch({
             type: PRODUCT_DETAILS_SUCCESS,
@@ -71,4 +80,53 @@ export const listProductDetails = (id) => async (dispatch) => {
             : error.message,
         })
     }
+}
+
+//
+export const createProductReview = (productId, review) => async (dispatch, getState) => {
+
+    try {
+
+        // Dispatch the request, which will return loading=true
+        dispatch({
+            type: PRODUCT_CREATE_REVIEW_REQUEST
+        })
+
+        // Get from the state userInfo, which will get the JWT access token in the config variable.
+        const { userLogin: { userInfo } } = getState()
+
+        // Send additional headers data to the API call.
+        const config = {
+
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrftoken,
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        // Send POST review data to the API for serialization and object saving to the database.
+        const { data } = await axios.post(
+            `http://localhost:8000/api/v1/item/${productId}/reviews/`,
+            review,
+            config
+        )
+
+        // Dispatch the success action and pass on the data via the payload
+        dispatch({
+            type: PRODUCT_CREATE_REVIEW_SUCCESS,
+            //payload: data       // @ todo: this is not needed? Reducer doesn't take in data
+        })
+
+    }
+    catch (error) {
+
+        // Start product reducer with the specified case type
+        dispatch({
+            type: PRODUCT_CREATE_REVIEW_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail
+            : error.message,
+        })
+    }
+
 }

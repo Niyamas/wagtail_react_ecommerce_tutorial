@@ -19,7 +19,7 @@ class UserSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=150)
     last_name = serializers.CharField(max_length=150, allow_blank=True, allow_null=True)
     password = serializers.CharField(write_only=True)
-    is_staff = serializers.BooleanField()
+    is_staff = serializers.BooleanField(read_only=True)
     #is_admin = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
