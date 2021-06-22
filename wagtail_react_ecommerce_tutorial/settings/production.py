@@ -22,9 +22,9 @@ COMPRESS_CSS_FILTERS = [
 COMPRESS_CSS_HASHING_METHOD = 'content'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MIDDLEWARE += [
+""" MIDDLEWARE += [
     'whitenoise.middleware.WhiteNoiseMiddleware',
-]
+] """
 
 
 """AWS"""
