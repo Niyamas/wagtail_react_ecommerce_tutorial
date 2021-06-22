@@ -183,11 +183,11 @@ print('BASE_DIR', BASE_DIR)
 print('BASE_DIR + FRONTENTD: ', os.path.join(BASE_DIR, 'frontend/build/static'))
 
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-#MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 
 
 """django-cors-headers (https://pypi.org/project/django-cors-headers/)"""
