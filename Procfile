@@ -1,0 +1,1 @@
+web: gunicorn starsight.wsgi --log-file -
