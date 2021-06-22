@@ -1,7 +1,7 @@
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool, default=True)
+DEBUG = True
 
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
