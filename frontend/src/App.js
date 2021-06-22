@@ -1,5 +1,5 @@
 import { Container } from 'react-bootstrap'    // React bootstrap package
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { HashRouter as Router, Route } from 'react-router-dom'
 
 import Header from './components/header/Header'
 import Footer from './components/footer/Footer'
