@@ -11,7 +11,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())                 # https://si
 
 
 """Whitenoise Static Files"""
-django_heroku.settings(locals(staticfiles=False))                                                    # @39:00: https://www.youtube.com/watch?v=6DI_7Zja8Zc&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=17
+django_heroku.settings(locals(), staticfiles=False)                                                    # @39:00: https://www.youtube.com/watch?v=6DI_7Zja8Zc&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=17
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'     # See: https://wagtail.io/blog/deploying-wagtail-heroku/
 COMPRESS_OFFLINE = True
 COMPRESS_CSS_FILTERS = [
