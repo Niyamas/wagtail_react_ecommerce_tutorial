@@ -19,8 +19,8 @@ COMPRESS_CSS_FILTERS = [
     'compressor.filters.cssmin.CSSMinFilter',
 ]
 COMPRESS_CSS_HASHING_METHOD = 'content'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_ROOT = os.path.join(BASE_DIR, 'frontend/build/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 """AWS"""
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
