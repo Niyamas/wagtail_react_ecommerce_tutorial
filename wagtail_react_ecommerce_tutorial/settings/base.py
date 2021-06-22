@@ -71,7 +71,7 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
-MIDDLEWARE = [
+""" MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',                        # django-cors-headers: https://pypi.org/project/django-cors-headers/
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -83,6 +83,21 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+] """
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',                        # django-cors-headers: https://pypi.org/project/django-cors-headers/
+
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
@@ -183,11 +198,11 @@ print('BASE_DIR', BASE_DIR)
 print('BASE_DIR + FRONTENTD: ', os.path.join(BASE_DIR, 'frontend/build/static'))
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+#MEDIA_URL = '/media/'
 
 
 """django-cors-headers (https://pypi.org/project/django-cors-headers/)"""
