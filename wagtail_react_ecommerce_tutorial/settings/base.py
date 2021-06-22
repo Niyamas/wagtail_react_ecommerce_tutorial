@@ -92,7 +92,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             #os.path.join(PROJECT_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'wagtail_react_ecommerce_tutorial/frontend/build')
+            os.path.join(BASE_DIR, 'frontend/build')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -175,7 +175,7 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
-    os.path.join(BASE_DIR, 'wagtail_react_ecommerce_tutorial/frontend/build/static'),
+    os.path.join(BASE_DIR, '/frontend/build/static'),
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
