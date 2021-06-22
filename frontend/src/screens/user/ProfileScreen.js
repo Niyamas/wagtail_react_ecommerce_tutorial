@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-//import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Form, Button, Row, Col, Table } from 'react-bootstrap'
@@ -12,7 +11,6 @@ import { getUserDetails, updateUserProfile } from '../../actions/userActions'
 import { listMyOrders } from '../../actions/orderActions'
 
 import { USER_UPDATE_PROFILE_RESET } from '../../constants/userConstants'
-import { domainURL } from '../../constants/domainConstants'
 
 
 function ProfileScreen({ history }) {

@@ -1,0 +1,18 @@
+.navbar__items__item {
+  margin: 0;
+}
+
+.searchbox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.searchbox__form {
+  margin-right: 0.5rem;
+}
+
+.navbar__right__search {
+  background-color: brown !important;
+}
+/*# sourceMappingURL=header.css.map */

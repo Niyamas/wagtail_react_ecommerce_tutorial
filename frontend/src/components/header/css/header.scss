@@ -1,0 +1,21 @@
+.navbar__items {
+    //display: flex;
+    //justify-content: space-between;
+
+    &__item {
+        margin: 0;
+    }
+}
+
+.searchbox {
+    display: flex;
+
+    &__form {
+        margin-right: 0.5rem;
+        //width: 40%;
+    }
+}
+
+.navbar__right__search {
+    background-color: brown !important;
+}

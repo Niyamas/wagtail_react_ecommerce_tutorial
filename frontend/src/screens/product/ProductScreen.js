@@ -68,7 +68,7 @@ function ProductScreen({ match, history }) {
         //
         dispatch(createProductReview(
             match.params.id,
-            { rating, comment}
+            { rating, comment }
         ))
     }
 

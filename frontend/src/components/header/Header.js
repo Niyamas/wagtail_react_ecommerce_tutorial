@@ -7,6 +7,8 @@ import SearchBox from './SearchBox'
 
 import { logout } from '../../actions/userActions'      // Actions -> Reducers -> Change state
 
+import './css/header.css'
+
 function Header() {
 
     // Grab from the state the userInfo
@@ -36,16 +38,16 @@ function Header() {
                     
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <SearchBox />
-                        <Nav className="mr-auto">
+                    <Navbar.Collapse id="basic-navbar-nav" className="navbar__right">
+                        <SearchBox cname="navbar__right__search" />
+                        <Nav className="navbar__right__icons ml-auto">
                             <LinkContainer to="/cart">
                                 <Nav.Link href="/cart"><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                             </LinkContainer>
 
                             {
                                 userInfo ? (
-                                    <NavDropdown title={userInfo.first_name} id='username'>
+                                    <NavDropdown title={userInfo.first_name} id='username' className="navbar__items__item">
                                         <LinkContainer to="/profile">
                                             <NavDropdown.Item>Profile</NavDropdown.Item>
                                         </LinkContainer>
@@ -54,7 +56,7 @@ function Header() {
                                     </NavDropdown>
                                 ) : (
 
-                                    <LinkContainer to="/login">
+                                    <LinkContainer to="/login" >
                                         <Nav.Link><i className="fas fa-user"></i>Login</Nav.Link>
                                     </LinkContainer>
                                 )

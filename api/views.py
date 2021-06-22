@@ -1,8 +1,11 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.core import paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models.query import QuerySet
 from django.utils import timezone
 
-from rest_framework import status
+from rest_framework import request, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
@@ -18,6 +21,7 @@ from rest_framework.generics import (
     RetrieveAPIView,
     UpdateAPIView
 )
+from wagtail.core.models import PAGE_MODEL_CLASSES
 
 from api.serializers.user_serializers import (
     UserSerializer,
@@ -67,6 +71,8 @@ def getRoutes(request):
 
 """Item API Views"""
 
+from rest_framework.pagination import PageNumberPagination
+
 class ItemListView(ListAPIView):
     """
     Lists all of the items. Can get this in Wagtail API, but that is read-only.
@@ -74,8 +80,45 @@ class ItemListView(ListAPIView):
     @todo: is this needed? Do we need write capabilities? If not, just use Wagtail's api to
     list the items.
     """
-    serializer_class = ItemSerializer
     queryset = ItemDetailPage.objects.all()
+    serializer_class = ItemSerializer
+    #pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        """Adds search functionality for the home page items."""
+
+        # Get the keyword URL parameter value. Return empty string if the keyword is empty.
+        # Filter the queryset based on the value of keyword and the queryset object's title.
+        keyword = self.request.query_params.get('keyword', '')
+        queryset = self.queryset.filter(title__icontains=keyword)
+
+        if isinstance(queryset, QuerySet):
+            # Ensure queryset is re-evaluated on each request.
+            queryset = queryset.all()
+
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        """Modification of original list method. Added different pagination method."""
+
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = request.query_params.get('page', 1)
+        paginator = Paginator(queryset, 2)
+
+        try:
+            queryset = paginator.page(page)
+
+        except PageNotAnInteger:
+            queryset = paginator.page(1)
+
+        except EmptyPage:
+            queryset = paginator.page(paginator.num_pages)
+
+        page = int(page)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'items': serializer.data, 'page': page, 'pages': paginator.num_pages})
 
 class ItemDetailListView(RetrieveUpdateDestroyAPIView):
     """
@@ -83,6 +126,30 @@ class ItemDetailListView(RetrieveUpdateDestroyAPIView):
     """
     serializer_class = ItemSerializer
     queryset = ItemDetailPage.objects.all()
+
+
+class ItemListTopItemsView(ListAPIView):
+    """A view to get the top items for the React carousel component to display."""
+
+    queryset = ItemDetailPage.objects.all()
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+
+        # Query 5 items with a rating greater than or equal to 4, in descending order(5 -> 4).
+        queryset = self.queryset.filter(rating__gte=4).order_by('-rating')[0:5]
+
+        if isinstance(queryset, QuerySet):
+            # Ensure queryset is re-evaluated on each request.
+            queryset = queryset.all()
+
+        return queryset
+
+    """ def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data) """
 
 
 """Cart & Order API Views"""

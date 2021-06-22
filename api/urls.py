@@ -4,6 +4,7 @@ from api.views import (
 
     ItemListView,
     ItemDetailListView,
+    ItemListTopItemsView,
 
     getUserProfile,
     updateUserProfile,
@@ -33,6 +34,7 @@ urlpatterns = [
 
     # Item
     path('items/', ItemListView.as_view(), name='item-list'),
+    path('items/top/', ItemListTopItemsView.as_view(), name='item-list-top'),
     path('item/<int:pk>/', ItemDetailListView.as_view(), name='item-detail'),
     path('item/<str:pk>/reviews/', ReviewCreateView.as_view(), name='review-add'),
 

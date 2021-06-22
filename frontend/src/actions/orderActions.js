@@ -12,12 +12,10 @@ import {
     ORDER_PAY_REQUEST,
     ORDER_PAY_SUCCESS,
     ORDER_PAY_FAIL,
-    ORDER_PAY_RESET,
 
     ORDER_LIST_MY_REQUEST,
     ORDER_LIST_MY_SUCCESS,
     ORDER_LIST_MY_FAIL,
-    ORDER_LIST_MY_RESET,
 } from '../constants/orderConstants'
 
 import { CART_CLEAR_ITEMS } from '../constants/cartConstants'

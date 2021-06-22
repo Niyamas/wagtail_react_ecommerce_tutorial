@@ -14,13 +14,17 @@ import {
     PRODUCT_CREATE_REVIEW_REQUEST,
     PRODUCT_CREATE_REVIEW_SUCCESS,
     PRODUCT_CREATE_REVIEW_FAIL,
+
+    PRODUCT_TOP_REQUEST,
+    PRODUCT_TOP_SUCCESS,
+    PRODUCT_TOP_FAIL,
 } from '../constants/productConstants'
 
 import { csrftoken } from '../components/shared/Csrf'
 
 
 // In charge of replacing the API call in the homescreen
-export const listProducts = () => async (dispatch) => {
+export const listProducts = (keyword = '') => async (dispatch) => {
 
     try {
 
@@ -30,7 +34,7 @@ export const listProducts = () => async (dispatch) => {
         })
 
         // Fetch the API items data with axios
-        const { data } = await axios.get('http://localhost:8000/api/v1/items/')
+        const { data } = await axios.get(`http://localhost:8000/api/v1/items/${keyword}`)
 
         // Start product reducer with the specified case type
         dispatch({
@@ -62,8 +66,6 @@ export const listProductDetails = (id) => async (dispatch) => {
 
         // Fetch the API items data with axios
         const { data } = await axios.get(`http://localhost:8000/api/v1/item/${id}`)
-
-        console.log('List product = ', data)
 
         // Start product reducer with the specified case type
         dispatch({
@@ -106,7 +108,7 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
         }
 
         // Send POST review data to the API for serialization and object saving to the database.
-        const { data } = await axios.post(
+        await axios.post(
             `http://localhost:8000/api/v1/item/${productId}/reviews/`,
             review,
             config
@@ -129,4 +131,34 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
         })
     }
 
+}
+
+export const listTopProducts = () => async (dispatch) => {
+
+    try {
+
+        // Start product reducer with the specified case type
+        dispatch({
+            type: PRODUCT_TOP_REQUEST
+        })
+
+        // Fetch the API items data with axios
+        const { data } = await axios.get(`http://localhost:8000/api/v1/items/top/`)
+
+        // Start product reducer with the specified case type
+        dispatch({
+            type: PRODUCT_TOP_SUCCESS,
+            payload: data
+        })
+    }
+    catch(error) {
+
+        // Start product reducer with the specified case type
+        // Detail comes from the error message from api.views.UserCreateView() and is a custom message.
+        dispatch({
+            type: PRODUCT_TOP_FAIL,
+            payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
+
+        })
+    }
 }
