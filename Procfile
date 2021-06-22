@@ -1,1 +1,1 @@
-web: gunicorn starsight.wsgi --log-file -
+web: gunicorn wagtail_react_ecommerce_tutorial.wsgi --log-file -
