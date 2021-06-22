@@ -9,10 +9,13 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())                 # https://simpleisbetterthancomplex.com/2015/11/26/package-of-the-week-python-decouple.html
 
 
+INSTALLED_APPS += [
+    'storages',
+]
+
+
 
 """Whitenoise Static Files"""
-#django_heroku.settings(locals(), staticfiles=False)                                                  # @39:00: https://www.youtube.com/watch?v=6DI_7Zja8Zc&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=17
-django_heroku.settings(locals())                                                  # @39:00: https://www.youtube.com/watch?v=6DI_7Zja8Zc&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=17
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'     # See: https://wagtail.io/blog/deploying-wagtail-heroku/
 COMPRESS_OFFLINE = True
 COMPRESS_CSS_FILTERS = [
@@ -21,7 +24,8 @@ COMPRESS_CSS_FILTERS = [
 ]
 COMPRESS_CSS_HASHING_METHOD = 'content'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+django_heroku.settings(locals())                                                # @39:00: https://www.youtube.com/watch?v=6DI_7Zja8Zc&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=17                                                # @39:00: https://www.youtube.com/watch?v=6DI_7Zja8Zc&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p&index=17
+#django_heroku.settings(locals(), staticfiles=False)
 """ MIDDLEWARE += [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ] """
@@ -37,11 +41,6 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
-
-INSTALLED_APPS += [
-    'storages',
-]
-
 
 
 """Deployment Security"""
