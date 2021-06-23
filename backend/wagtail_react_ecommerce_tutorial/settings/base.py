@@ -18,9 +18,6 @@ from datetime import timedelta
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-FRONTEND_DIR = os.path.abspath( os.path.join(BASE_DIR, 'frontend') )
-
-print('frontend = ', FRONTEND_DIR)
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -111,7 +108,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             #os.path.join(PROJECT_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'frontend', 'build'),
+            os.path.join(BASE_DIR, '../frontend/build'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -193,7 +190,7 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     #os.path.join(PROJECT_DIR, 'static'),
-    os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
+    os.path.join(BASE_DIR, '../frontend/build/static'),
 ]
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
