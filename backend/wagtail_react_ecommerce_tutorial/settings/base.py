@@ -18,6 +18,9 @@ from datetime import timedelta
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
+FRONTEND_DIR = os.path.abspath( os.path.join(BASE_DIR, 'frontend') )
+
+print('frontend = ', FRONTEND_DIR)
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
