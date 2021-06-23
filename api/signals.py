@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 # Listen for when the User updates.
 #@receiver(pre_save, sender=User)
 #def update_user(instance, **kwargs):
-    """
-    update_user is called before a User object is saved/updated.
-    """
+"""
+update_user is called before a User object is saved/updated.
+"""
     #print('Signal Triggered')
 
 #    user = instance
