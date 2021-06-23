@@ -19,6 +19,7 @@ import {
     PRODUCT_TOP_SUCCESS,
     PRODUCT_TOP_FAIL,
 } from '../constants/productConstants'
+import { domainURL } from '../constants/domainConstants'
 
 import { csrftoken } from '../components/shared/Csrf'
 
@@ -34,7 +35,7 @@ export const listProducts = (keyword = '') => async (dispatch) => {
         })
 
         // Fetch the API items data with axios
-        const { data } = await axios.get(`http://localhost:8000/api/v1/items/${keyword}`)
+        const { data } = await axios.get(`${domainURL}/api/v1/items/${keyword}`)
 
         // Start product reducer with the specified case type
         dispatch({
@@ -65,7 +66,7 @@ export const listProductDetails = (id) => async (dispatch) => {
         })
 
         // Fetch the API items data with axios
-        const { data } = await axios.get(`http://localhost:8000/api/v1/item/${id}`)
+        const { data } = await axios.get(`${domainURL}/api/v1/item/${id}`)
 
         // Start product reducer with the specified case type
         dispatch({
@@ -109,7 +110,7 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
 
         // Send POST review data to the API for serialization and object saving to the database.
         await axios.post(
-            `http://localhost:8000/api/v1/item/${productId}/reviews/`,
+            `${domainURL}/api/v1/item/${productId}/reviews/`,
             review,
             config
         )
@@ -143,7 +144,7 @@ export const listTopProducts = () => async (dispatch) => {
         })
 
         // Fetch the API items data with axios
-        const { data } = await axios.get(`http://localhost:8000/api/v1/items/top/`)
+        const { data } = await axios.get(`${domainURL}/api/v1/items/top/`)
 
         // Start product reducer with the specified case type
         dispatch({

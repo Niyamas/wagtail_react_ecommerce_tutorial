@@ -22,6 +22,7 @@ import {
     USER_UPDATE_PROFILE_FAIL,
     //USER_UPDATE_PROFILE_RESET
 } from '../constants/userConstants'
+import { domainURL } from '../constants/domainConstants'
 
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
@@ -47,7 +48,7 @@ export const login = (email, password) => async (dispatch) => {
 
         // Make API call to the JWT login with the user's username (email) and password
         const { data } = await axios.post(
-            'http://localhost:8000/api/v1/users/login/',
+            `${domainURL}/api/v1/users/login/`,
             {'username': email, 'password': password},
             config
         )
@@ -123,7 +124,7 @@ export const register = (name, email, password) => async (dispatch) => {
         // Due to view logic, will split two names as first_name and last_name. If one
         // is given, leave last_name blank and fill in first_name.
         const {data} = await axios.post(
-            'http://localhost:8000/api/v1/users/register/',
+            `${domainURL}/api/v1/users/register/`,
             { 'name': name, 'email': email, 'password': password },
             config
         )
@@ -182,7 +183,7 @@ export const getUserDetails = (idOrPage) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.get(
-            `http://localhost:8000/api/v1/users/${idOrPage}/`,
+            `${domainURL}/api/v1/users/${idOrPage}/`,
             config
         )
 
@@ -231,7 +232,7 @@ export const updateUserProfile = (userData) => async (dispatch, getState) => {
         // Update the user data and store that in a variable 'data', which is fetched from the API via axios.
         // API takes in name, email and password.
         const { data } = await axios.put(
-            'http://localhost:8000/api/v1/users/profile/update/',
+            `${domainURL}/api/v1/users/profile/update/`,
             userData,
             config
         )

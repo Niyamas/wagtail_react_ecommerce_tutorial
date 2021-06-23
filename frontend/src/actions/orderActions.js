@@ -17,6 +17,7 @@ import {
     ORDER_LIST_MY_SUCCESS,
     ORDER_LIST_MY_FAIL,
 } from '../constants/orderConstants'
+import { domainURL } from '../constants/domainConstants'
 
 import { CART_CLEAR_ITEMS } from '../constants/cartConstants'
 
@@ -50,7 +51,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
         // Update the user data and store that in a variable 'data', which is fetched from the API via axios.
         // API takes in name, email and password.
         const { data } = await axios.post(
-            'http://localhost:8000/api/v1/cart/add/',
+            `${domainURL}/api/v1/cart/add/`,
             order,
             config
         )
@@ -110,7 +111,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 
         // Get order/cart data from a created cart.
         const { data } = await axios.get(
-            `http://localhost:8000/api/v1/cart/${id}/`,
+            `${domainURL}/api/v1/cart/${id}/`,
             config
         )
         .catch( (error) => console.log('axios get error:', error))
@@ -158,7 +159,7 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
 
         // Get order/cart data from a created cart.
         const { data } = await axios.put(
-            `http://localhost:8000/api/v1/cart/${id}/pay/`,
+            `${domainURL}/api/v1/cart/${id}/pay/`,
             paymentResult,
             config
         )
@@ -209,7 +210,7 @@ export const listMyOrders = () => async (dispatch, getState) => {
 
         // Get order/cart data from a created cart.
         const { data } = await axios.get(
-            `http://localhost:8000/api/v1/my-orders/`,
+            `${domainURL}/api/v1/my-orders/`,
             config
         )
         .catch( (error) => console.log('axios post error:', error))

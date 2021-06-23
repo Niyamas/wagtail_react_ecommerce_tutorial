@@ -8,12 +8,12 @@ import {
     CART_SAVE_SHIPPING_ADDRESS,
     CART_SAVE_PAYMENT_METHOD
 } from '../constants/cartConstants'
-
+import { domainURL } from '../constants/domainConstants'
 
 export const addToCart = (productId, quantity) => async(dispatch, getState) => {
     // getState is like useSelector. Can get parts or all of the state.
 
-    const { data } = await axios.get(`http://localhost:8000/api/v1/item/${productId}`)
+    const { data } = await axios.get(`${domainURL}/api/v1/item/${productId}`)
 
     dispatch({
         type: CART_ADD_ITEM,
