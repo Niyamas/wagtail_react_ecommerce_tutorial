@@ -124,7 +124,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wagtail_react_ecommerce_tutorial.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -190,12 +189,9 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, 'static'),
+    #os.path.join(PROJECT_DIR, 'static'),
     os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
-
-print('BASE_DIR', BASE_DIR)
-print('BASE_DIR + FRONTENTD: ', os.path.join(BASE_DIR, 'frontend/build/static'))
 
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
