@@ -108,7 +108,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             #os.path.join(PROJECT_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'frontend', 'build'),
+            os.path.join(BASE_DIR, 'frontend/build'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -190,7 +190,7 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     #os.path.join(PROJECT_DIR, 'static'),
-    os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
+    os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -202,8 +202,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 """django-cors-headers (https://pypi.org/project/django-cors-headers/)"""
 # Essential for API work.
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv())
-
+CORS_ALLOWED_ORIGINSw = config('CORS_ALLOWED_ORIGINS', cast=Csv())
 #CORS_ALLOW_ALL_ORIGINS = True
 
 
