@@ -105,7 +105,7 @@ class ItemListView(ListAPIView):
         queryset = self.filter_queryset(self.get_queryset())
 
         page = request.query_params.get('page', 1)
-        paginator = Paginator(queryset, 4)
+        paginator = Paginator(queryset, 8)
 
         try:
             queryset = paginator.page(page)
