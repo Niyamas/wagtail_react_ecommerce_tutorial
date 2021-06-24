@@ -90,7 +90,7 @@ class ItemListView(ListAPIView):
         # Get the keyword URL parameter value. Return empty string if the keyword is empty.
         # Filter the queryset based on the value of keyword and the queryset object's title.
         keyword = self.request.query_params.get('keyword', '')
-        queryset = self.queryset.filter(title__icontains=keyword)
+        queryset = self.queryset.filter(title__icontains=keyword).order_by('-first_published_at')
 
         if isinstance(queryset, QuerySet):
             # Ensure queryset is re-evaluated on each request.

@@ -28,6 +28,7 @@
 .searchbox__btn {
   color: white;
   border-color: white;
+  outline: blue !important;
 }
 
 .searchbox__btn:hover {
