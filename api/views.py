@@ -96,8 +96,8 @@ class ItemListView(ListAPIView):
             # Ensure queryset is re-evaluated on each request.
             queryset = queryset.all()
 
-        return queryset
-        #return queryset.order_by('-first_published_at')
+        #return queryset
+        return queryset.order_by('-first_published_at')
 
     def list(self, request, *args, **kwargs):
         """Modification of original list method. Added different pagination method."""
