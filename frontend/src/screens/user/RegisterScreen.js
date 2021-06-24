@@ -64,7 +64,7 @@ function RegisterScreen({ location, history }) {
     return (
 
         <FormContainer>
-            <h1>Sign In</h1>
+            <h1>Register</h1>
 
             {/* This error shows when the passwords don't match */}
             { message && <Message variant="danger">{ message }</Message> }
@@ -75,7 +75,7 @@ function RegisterScreen({ location, history }) {
             { loading && <Loader /> }
 
             <Form onSubmit={ submitHandler }>
-                <Form.Group controlId="name">
+                <Form.Group controlId="name" className="register__form">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
                         type="name"
@@ -87,7 +87,7 @@ function RegisterScreen({ location, history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId="email">
+                <Form.Group controlId="email" className="register__form">
                     <Form.Label>Email Address</Form.Label>
                     <Form.Control
                         type="email"
@@ -99,7 +99,7 @@ function RegisterScreen({ location, history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId="password">
+                <Form.Group controlId="password" className="register__form">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         type="password"
@@ -111,7 +111,7 @@ function RegisterScreen({ location, history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId="passwordConfirm">
+                <Form.Group controlId="passwordConfirm" className="register__form">
                     <Form.Label>Confirm Password</Form.Label>
                     <Form.Control
                         type="password"
@@ -123,12 +123,12 @@ function RegisterScreen({ location, history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Button type="submit" variant="primary">Register</Button>
+                <Button className="btn-conglomerate register-btn" type="submit" variant="primary">Register</Button>
             </Form>
 
             <Row className="py-3">
                 <Col>
-                    Have an Account?
+                    Have an Account?&nbsp;
                     <Link
                         /* Check if redirect is there, if not, go to the register page. */
                         to={ redirect ? `/login?redirect=${ redirect }` : '/login' }

@@ -1,3 +1,15 @@
+.navbar {
+    //background-color: #ff6445 !important;
+    background-color: #ff8763 !important;
+    //background-color: #e25e25 !important;
+    //background-color: #fa7155 !important;
+
+    &__right {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
 .navbar__items {
     //display: flex;
     //justify-content: space-between;
@@ -14,8 +26,16 @@
         margin-right: 0.5rem;
         //width: 40%;
     }
-}
 
-.navbar__right__search {
-    background-color: brown !important;
+    &__btn {
+        color: white;
+        border-color: white;
+
+        &:hover {
+            //color: #33A1FD;
+            border-color: white;
+            background-color: white;
+            color: #242a3a;
+        }
+    }
 }

@@ -26,6 +26,11 @@ function HomeScreen({ history }) {
 
     let urlParams = history.location.search
 
+    let pageParam = new URLSearchParams(history.location.search).get('page')
+
+    console.log('pageParam =', pageParam)
+    console.log('urlParams =', urlParams)
+
     // Use effect triggers when the component loads or a state updates. (Triggers when dispatch changes)
     useEffect( () => {
 
@@ -39,10 +44,10 @@ function HomeScreen({ history }) {
         <div>
             {
                 /* Only show the carousel when the user isn't searching. */
-                !urlParams && <ProductCarousel />
+                (!pageParam || pageParam === '1' || !urlParams) && <ProductCarousel />
             }
             
-            <h1>Latest Products</h1>
+            <h1 className="latest-products-banner">Latest Products</h1>
 
             {/* Check first if the items are loading, if not, display error. If it's loaded, display the items */}
             {

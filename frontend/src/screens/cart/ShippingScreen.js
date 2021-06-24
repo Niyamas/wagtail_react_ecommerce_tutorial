@@ -8,6 +8,8 @@ import CheckoutSteps from '../../components/cart/CheckoutSteps'
 
 import { saveShippingAddress } from '../../actions/cartActions'
 
+import './css/cart.css'
+
 
 function ShippingScreen({ history }) {
 
@@ -61,7 +63,7 @@ function ShippingScreen({ history }) {
             <h1>Shipping</h1>
             <Form onSubmit={ submitHandler }>
 
-                <Form.Group controlId="address">
+                <Form.Group controlId="address" className="address__form">
                     <Form.Label>Address</Form.Label>
                     <Form.Control
                         type="text"
@@ -73,7 +75,7 @@ function ShippingScreen({ history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId="city">
+                <Form.Group controlId="city" className="address__form">
                     <Form.Label>City</Form.Label>
                     <Form.Control
                         type="text"
@@ -85,7 +87,7 @@ function ShippingScreen({ history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId="postalCode">
+                <Form.Group controlId="postalCode" className="address__form">
                     <Form.Label>Postal Code</Form.Label>
                     <Form.Control
                         type="text"
@@ -97,7 +99,7 @@ function ShippingScreen({ history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId="country">
+                <Form.Group controlId="country" className="address__form">
                     <Form.Label>Country</Form.Label>
                     <Form.Control
                         type="text"
@@ -109,7 +111,7 @@ function ShippingScreen({ history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Button type="submit" variant="primary">Continue</Button>
+                <Button className="btn-conglomerate shipping-continue-btn" type="submit" variant="primary">Continue</Button>
 
             </Form>
         </FormContainer>

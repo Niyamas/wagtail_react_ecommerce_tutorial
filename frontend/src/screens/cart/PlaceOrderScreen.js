@@ -82,9 +82,9 @@ function PlaceOrderScreen({ history }) {
                     <ListGroup variant="flush">
 
                         <ListGroup.Item>
-                            <h2>Shipping</h2>
-                            <p>
-                                <strong>Shipping: </strong>
+                            <h2 className="checkout__banner">Shipping</h2>
+                            <p className="checkout__banner__detail">
+                                {/* <strong>Shipping: </strong> */}
                                 { cart.shippingAddress.address }, { cart.shippingAddress.city }
                                 {'  '}
                                 { cart.shippingAddress.postalCode },
@@ -94,15 +94,15 @@ function PlaceOrderScreen({ history }) {
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <h2>Payment Method</h2>
-                            <p>
-                                <strong>Method: </strong>
+                            <h2 className="checkout__banner">Payment Method</h2>
+                            <p className="checkout__banner__detail">
+                                {/* <strong>Method: </strong> */}
                                 { cart.paymentMethod }
                             </p>
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <h2>Order Items</h2>
+                            <h2 className="checkout__banner">Order Items</h2>
 
                             {
                                 cart.cartItems.length === 0 ? <Message variant="info">Your cart is empty</Message>
@@ -139,7 +139,7 @@ function PlaceOrderScreen({ history }) {
                     <ListGroup variant="flush">
 
                         <ListGroup.Item>
-                            <h2>Order Summary</h2>
+                            <h2 className="checkout__banner">Order Summary</h2>
                         </ListGroup.Item>
 
                         <ListGroup.Item>
@@ -169,17 +169,18 @@ function PlaceOrderScreen({ history }) {
                                 <Col>${ cart.totalPrice }</Col>
                             </Row>
                         </ListGroup.Item>
-
-                        <ListGroup.Item>
-                            {
-                                error && <Message variant="danger">{ error }</Message>
-                            }
-                        </ListGroup.Item>
-
+                        
+                        {
+                            error &&
+                                <ListGroup.Item>
+                                    <Message variant="danger">{ error }</Message>
+                                </ListGroup.Item>
+                        }
+                        
                         <ListGroup.Item>
                             <Button
                                 type="button"
-                                className="btn-block"
+                                className="btn-conglomerate place-order-btn btn-block"
                                 disabled={ cart.cartItems === 0 }
                                 onClick={ placeOrder }
                             >

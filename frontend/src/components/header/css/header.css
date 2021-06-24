@@ -1,3 +1,16 @@
+.navbar {
+  background-color: #ff8763 !important;
+}
+
+.navbar__right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
 .navbar__items__item {
   margin: 0;
 }
@@ -12,7 +25,14 @@
   margin-right: 0.5rem;
 }
 
-.navbar__right__search {
-  background-color: brown !important;
+.searchbox__btn {
+  color: white;
+  border-color: white;
+}
+
+.searchbox__btn:hover {
+  border-color: white;
+  background-color: white;
+  color: #242a3a;
 }
 /*# sourceMappingURL=header.css.map */

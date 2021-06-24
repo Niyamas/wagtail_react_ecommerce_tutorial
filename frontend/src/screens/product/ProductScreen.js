@@ -75,7 +75,7 @@ function ProductScreen({ match, history }) {
     return (
 
         <div>
-            <Link to="/" className='btn btn-ligh my-3'>Go Back</Link>
+            <Link to="/" className='go-back-btn btn btn-ligh my-3'>Go Back</Link>
 
             {
                 loading ? <Loader /> 
@@ -89,19 +89,19 @@ function ProductScreen({ match, history }) {
                     
                                     <Col md={3}>
                                         <ListGroup variant="flush">
-                                            <ListGroup.Item>
-                                                <h3>{product.title}</h3>
+                                            <ListGroup.Item className="item__detail item__detail--top">
+                                                <h3 className="item__title">{product.title}</h3>
                                             </ListGroup.Item>
                     
-                                            <ListGroup.Item>
+                                            <ListGroup.Item className="item__detail">
                                                 <Rating value={product.rating} text={`${product.quantity_reviews} reviews`} color={'#f8e825'} />
                                             </ListGroup.Item>
                     
-                                            <ListGroup.Item>
-                                                Price: ${product.price}
+                                            <ListGroup.Item className="item__detail">
+                                                <span className="item__detail__price"n>Price: </span><span className="item__detail__price__monie">${product.price}</span>
                                             </ListGroup.Item>
                     
-                                            <ListGroup.Item dangerouslySetInnerHTML={{ __html: `Description: ${product.description}` }}>
+                                            <ListGroup.Item className="item__detail item__text" dangerouslySetInnerHTML={{ __html: `<p class="item__description">Description:</p>${product.description}` }}>
                                             </ListGroup.Item>
                                         </ListGroup>
                                     </Col>
@@ -153,7 +153,7 @@ function ProductScreen({ match, history }) {
                     
                                                 <ListGroup.Item>
                                                     <Button
-                                                        className="add-btn btn-block"
+                                                        className="add-btn btn-block btn-conglomerate"
                                                         onClick={ addToCartHandler }
                                                         disabled={product.quantity_in_stock <= 0 }
                                                         type="button"
@@ -166,7 +166,7 @@ function ProductScreen({ match, history }) {
                                     </Col>
                                 </Row>
 
-                                <Row>
+                                <Row className="reviews">
                                     <Col md={6}>
                                     <h4>Reviews</h4>
                                         {/* @ todo: When pressing ctrl + shift + r on a page with a review, it will say it can't access product.review_data.length */}
@@ -176,7 +176,7 @@ function ProductScreen({ match, history }) {
                                             {
                                                 product?.review_data?.map( (review) => (
 
-                                                    <ListGroup.Item key={review.id}>
+                                                    <ListGroup.Item className="reviews__review" key={review.id}>
                                                         <strong>{ review.name }</strong>
                                                         <Rating value={ review.rating } color="#f8e825" />
                                                         <p>{ review.created_at.substring(0, 10) }</p>
@@ -184,7 +184,7 @@ function ProductScreen({ match, history }) {
                                                     </ListGroup.Item>
                                                 ))
                                             }
-                                            <ListGroup.Item>
+                                            <ListGroup.Item className="reviews__forms">
                                                 <h4>Write a review</h4>
 
                                                 { loadingProductReview && <Loader /> }
@@ -196,7 +196,7 @@ function ProductScreen({ match, history }) {
                                                 {
                                                     userInfo ? (
                                                         <Form onSubmit={submitHandler}>
-                                                            <Form.Group controlId="rating">
+                                                            <Form.Group controlId="rating" className="reviews__forms__form">
                                                                 <Form.Label>Rating</Form.Label>
                                                                 <Form.Control
                                                                     as="select"
@@ -212,7 +212,7 @@ function ProductScreen({ match, history }) {
                                                                 </Form.Control>
                                                             </Form.Group>
 
-                                                            <Form.Group controlId="comment">
+                                                            <Form.Group controlId="comment" className="reviews__forms__form">
                                                                 <Form.Label>Review</Form.Label>
                                                                 <Form.Control
                                                                     as="textarea"
@@ -229,6 +229,7 @@ function ProductScreen({ match, history }) {
                                                                 disabled={ loadingProductReview }
                                                                 type="submit"
                                                                 variant="primary"
+                                                                className="btn-conglomerate reviews__forms__btn"
                                                             >
                                                                 Submit
                                                             </Button>

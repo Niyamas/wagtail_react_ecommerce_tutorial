@@ -1,0 +1,34 @@
+.address__form:not(:first-child) {
+  margin: 1rem 0 0 0;
+}
+
+.shipping-continue-btn {
+  margin-top: 1.5rem;
+}
+
+.payment__legend {
+  padding-top: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.payment-continue-btn {
+  margin-top: 1rem;
+}
+
+.checkout__banner {
+  margin: 1.5rem 0 1rem 0;
+}
+
+.checkout__banner__detail {
+  margin-bottom: 1.5rem;
+}
+
+.place-order-btn {
+  width: 40%;
+}
+
+.paypal-bricks {
+  margin-top: 1rem;
+}
+/*# sourceMappingURL=cart.css.map */

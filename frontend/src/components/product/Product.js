@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'     // Using Link instead of the a tag a
 
 import Rating from './Rating'
 
+import './css/product.css'
+
 
 function Product({ product }) {
 

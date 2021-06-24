@@ -1,16 +1,20 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 
+import './css/footer.css'
+
 function Footer() {
 
     return (
 
-        <footer>
-            <Container>
-                <Row>
-                    <Col className="text-center py-3">Copyright &copy; Brickshop Emporioum</Col>
-                </Row>
-            </Container>
+        <footer className="footer">
+            <div className="footer__content">
+                <h1 className="footer__content__title">Brickshop Bazaar</h1>
+                <p className="footer__content__copyright">
+                    Copyright &copy; Brickshop Emporioum
+                </p>
+            </div>
+
         </footer>
 
     )

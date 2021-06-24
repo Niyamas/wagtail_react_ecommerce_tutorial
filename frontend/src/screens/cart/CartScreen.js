@@ -133,7 +133,7 @@ function CartScreen({ match, location, history }) {
                     <ListGroup>
                         <Button
                             type="button"
-                            className="btn-block"
+                            className="btn-conglomerate btn-block"
                             disabled={ cartItems.length === 0 }
                             onClick={ checkoutHandler }
                         >

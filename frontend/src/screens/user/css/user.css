@@ -1,0 +1,32 @@
+.login__form--password {
+  margin: 1rem 0 1.5rem 0;
+}
+
+.profile {
+  margin-right: 4vw;
+}
+
+.profile__form:not(:first-child) {
+  margin: 1rem 0 0 0;
+}
+
+.profile-update-btn {
+  margin-top: 1.5rem;
+}
+
+th {
+  padding-top: 0px !important;
+}
+
+h2 {
+  margin-bottom: 2rem;
+}
+
+.register__form:not(:first-child) {
+  margin: 1rem 0 0 0;
+}
+
+.register-btn {
+  margin-top: 1.5rem;
+}
+/*# sourceMappingURL=user.css.map */

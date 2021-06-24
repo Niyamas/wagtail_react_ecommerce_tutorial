@@ -54,9 +54,9 @@ function SearchBox(props) {
             <Button
                 type="submit"
                 variant="outline-success"
-                className="p-2"
+                className="searchbox__btn p-2"
             >
-                Submit
+                Search
             </Button>
         </Form>
 

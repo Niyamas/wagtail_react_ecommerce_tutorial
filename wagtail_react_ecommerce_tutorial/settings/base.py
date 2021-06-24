@@ -202,8 +202,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 """django-cors-headers (https://pypi.org/project/django-cors-headers/)"""
 # Essential for API work.
-CORS_ALLOWED_ORIGINSw = config('CORS_ALLOWED_ORIGINS', cast=Csv())
-#CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOWED_ORIGINSw = config('CORS_ALLOWED_ORIGINS', cast=Csv())
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 """

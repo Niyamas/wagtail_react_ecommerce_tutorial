@@ -28,21 +28,21 @@ function Header() {
 
     return (
 
-        <header>
+        <header className="header">
             <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
                 <Container>
 
                     <LinkContainer to='/'>
-                        <Navbar.Brand href="/">Brickshop Emporium</Navbar.Brand>
+                        <Navbar.Brand href="/">Brickshop Bazaar</Navbar.Brand>
                     </LinkContainer>
                     
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
                     <Navbar.Collapse id="basic-navbar-nav" className="navbar__right">
-                        <SearchBox cname="navbar__right__search" />
+                        <SearchBox />
                         <Nav className="navbar__right__icons ml-auto">
                             <LinkContainer to="/cart">
-                                <Nav.Link href="/cart"><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
+                                <Nav.Link href="/cart"><i className="fas fa-shopping-cart">&nbsp;</i>Cart</Nav.Link>
                             </LinkContainer>
 
                             {
@@ -57,7 +57,7 @@ function Header() {
                                 ) : (
 
                                     <LinkContainer to="/login" >
-                                        <Nav.Link><i className="fas fa-user"></i>Login</Nav.Link>
+                                        <Nav.Link><i className="fas fa-user">&nbsp;</i>Login</Nav.Link>
                                     </LinkContainer>
                                 )
                                     

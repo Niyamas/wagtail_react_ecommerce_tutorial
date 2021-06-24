@@ -10,6 +10,8 @@ import FormContainer from '../../components/shared/FormContainer'
 
 import { login } from '../../actions/userActions'
 
+import './css/user.css'
+
 
 function LoginScreen({ location, history }) {
 
@@ -58,7 +60,7 @@ function LoginScreen({ location, history }) {
             { loading && <Loader /> }
 
             <Form onSubmit={ submitHandler }>
-                <Form.Group controlId="email">
+                <Form.Group controlId="email" className="login__form">
                     <Form.Label>Email Address</Form.Label>
                     <Form.Control
                         type="email"
@@ -69,7 +71,7 @@ function LoginScreen({ location, history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Form.Group controlId="password">
+                <Form.Group controlId="password" className="login__form login__form--password">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         type="password"
@@ -80,13 +82,13 @@ function LoginScreen({ location, history }) {
                     </Form.Control>
                 </Form.Group>
 
-                <Button type="submit" variant="primary">Sign In</Button>
+                <Button className="btn-conglomerate" type="submit" variant="primary">Sign In</Button>
 
             </Form>
 
             <Row className="py-3">
                 <Col>
-                    New Customer?
+                    New Customer?&nbsp;
                     <Link
                         /* Check if redirect is there, if not, go to the register page. */
                         to={ redirect ? `/register?redirect=${ redirect }` : '/register' }

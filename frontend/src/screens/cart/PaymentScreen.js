@@ -43,10 +43,10 @@ function PaymentScreen({ history }) {
         
         <FormContainer>
             <CheckoutSteps step1 step2 step3 />
-
+            
             <Form onSubmit={ submitHandler }>
                 <Form.Group>
-                    <Form.Label as="legend">Select Method</Form.Label>
+                    <Form.Label className="payment__legend" as="legend">Select Method</Form.Label>
                     <Col>
                         <Form.Check
                             type="radio"
@@ -61,7 +61,7 @@ function PaymentScreen({ history }) {
                     </Col>
                 </Form.Group>
 
-                <Button type="submit" variant="primary">Continue</Button>
+                <Button className="btn-conglomerate payment-continue-btn" type="submit" variant="primary">Continue</Button>
             </Form>
             
         </FormContainer>

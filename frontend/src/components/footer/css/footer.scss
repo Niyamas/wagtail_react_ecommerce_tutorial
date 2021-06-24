@@ -1,0 +1,22 @@
+.footer {
+    //margin-top: 150px;
+    height: 200px;
+    background-color: #242a3a;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__content {
+
+        &__title {
+            color: white;
+        }
+
+        &__copyright {
+            color: rgba(255, 255, 255, 0.692);
+            display: flex;
+            justify-content: center;
+        }
+    }
+}

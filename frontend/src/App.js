@@ -15,6 +15,8 @@ import PaymentScreen from './screens/cart/PaymentScreen'
 import PlaceOrderScreen from './screens/cart/PlaceOrderScreen'
 import OrderScreen from './screens/cart/OrderScreen'
 
+import './css/main.css'
+
 
 function App() {
 
@@ -23,7 +25,7 @@ function App() {
 		<Router>
 			<Header />
 			
-			<main className="py-3">
+			<main className="main py-3">
 				<Container>
 					<Route exact path='/' component={ HomeScreen } />
 					<Route path='/login' component={ LoginScreen } />

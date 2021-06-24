@@ -12,6 +12,8 @@ import { listMyOrders } from '../../actions/orderActions'
 
 import { USER_UPDATE_PROFILE_RESET } from '../../constants/userConstants'
 
+import './css/user.css'
+
 
 function ProfileScreen({ history }) {
 
@@ -63,9 +65,6 @@ function ProfileScreen({ history }) {
 
                 // idOrPage is part of URL: /api/v1/users/${idOrPage}/, which is 'profile'.
                 dispatch(getUserDetails('profile'))
-
-                // Dispatch action to pull from the API a list of the customer's carts and orders.
-                dispatch(listMyOrders())
             }
             else {
 
@@ -73,6 +72,9 @@ function ProfileScreen({ history }) {
                 setName(user.first_name + ' ' + user.last_name)
                 setEmail(user.email)
             }
+
+            // Dispatch action to pull from the API a list of the customer's carts and orders.
+            dispatch(listMyOrders())
         }
     }, [dispatch, history, user, userInfo, success])
 
@@ -111,7 +113,7 @@ function ProfileScreen({ history }) {
     return (
 
         <Row>
-            <Col md={3}>
+            <Col className="profile" md={3}>
                 <h2>User Profile</h2>
 
                 {/* This error shows when the passwords don't match */}
@@ -123,7 +125,7 @@ function ProfileScreen({ history }) {
                 { loading && <Loader /> }
 
                 <Form onSubmit={ submitHandler }>
-                    <Form.Group controlId="name">
+                    <Form.Group controlId="name" className="profile__form">
                         <Form.Label>Name</Form.Label>
                         <Form.Control
                             type="name"
@@ -135,7 +137,7 @@ function ProfileScreen({ history }) {
                         </Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="email">
+                    <Form.Group controlId="email" className="profile__form">
                         <Form.Label>Email Address</Form.Label>
                         <Form.Control
                             type="email"
@@ -147,7 +149,7 @@ function ProfileScreen({ history }) {
                         </Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="password">
+                    <Form.Group controlId="password" className="profile__form">
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                             type="password"
@@ -158,7 +160,7 @@ function ProfileScreen({ history }) {
                         </Form.Control>
                     </Form.Group>
 
-                    <Form.Group controlId="passwordConfirm">
+                    <Form.Group controlId="passwordConfirm" className="profile__form">
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control
                             type="password"
@@ -169,11 +171,11 @@ function ProfileScreen({ history }) {
                         </Form.Control>
                     </Form.Group>
 
-                    <Button type="submit" variant="primary">Update</Button>
+                    <Button className="btn-conglomerate profile-update-btn" type="submit" variant="primary">Update</Button>
                 </Form>
             </Col>
 
-            <Col md={3}>
+            <Col md={7}>
                 <h2>My Orders</h2>
                 {
                     loadingOrders ? (
@@ -210,7 +212,7 @@ function ProfileScreen({ history }) {
                                                 </td>
                                                 <td>
                                                     <LinkContainer to= {`/order/${order.id}`}>
-                                                        <Button className="btn-sm">Details</Button>
+                                                        <Button className="btn-conglomerate btn-sm">Details</Button>
                                                     </LinkContainer>
                                                 </td>
                                             </tr>

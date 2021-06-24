@@ -106,7 +106,7 @@ function PlaceOrderScreen({ match }) {
                     <ListGroup variant="flush">
 
                         <ListGroup.Item>
-                            <h2>Shipping</h2>
+                            <h2 className="checkout__banner">Shipping</h2>
                             <p><strong>Name: </strong>{order.user_data.first_name} {order.user_data.last_name}</p>
                             <p><strong>Email: </strong><a href={`mailto:${order.user_data.email}`}>{order.user_data.email}</a></p>
                             <p>
@@ -128,7 +128,7 @@ function PlaceOrderScreen({ match }) {
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <h2>Payment Method</h2>
+                            <h2 className="checkout__banner">Payment Method</h2>
                             <p>
                                 <strong>Method: </strong>
                                 { order.payment_method }
@@ -143,7 +143,7 @@ function PlaceOrderScreen({ match }) {
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <h2>Order Items</h2>
+                            <h2 className="checkout__banner">Order Items</h2>
 
                             {
                                 order.orders.length === 0 ? <Message variant="info">Your orders are empty</Message>
@@ -180,7 +180,7 @@ function PlaceOrderScreen({ match }) {
                     <ListGroup variant="flush">
 
                         <ListGroup.Item>
-                            <h2>Order Summary</h2>
+                            <h2 className="checkout__banner">Order Summary</h2>
                         </ListGroup.Item>
 
                         <ListGroup.Item>
@@ -213,7 +213,7 @@ function PlaceOrderScreen({ match }) {
 
                         {
                             !order.is_paid && (
-                                <ListGroup.Item>
+                                <ListGroup.Item className="paypal-bricks">
                                     {
                                         loadingPay && <Loader />
                                     }
