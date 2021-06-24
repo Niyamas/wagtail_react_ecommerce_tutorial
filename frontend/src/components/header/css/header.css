@@ -35,4 +35,8 @@
   background-color: white;
   color: #242a3a;
 }
+
+.searchbox__btn:focus, .searchbox__btn:active {
+  outline: blue !important;
+}
 /*# sourceMappingURL=header.css.map */

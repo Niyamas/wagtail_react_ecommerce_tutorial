@@ -9,6 +9,8 @@ import Loader from '../../components/shared/Loader'
 import Message from '../../components/shared/Message'
 import { listProducts } from '../../actions/productActions'
 
+import './css/home.css'
+
 
 function HomeScreen({ history }) {
 
@@ -58,7 +60,7 @@ function HomeScreen({ history }) {
                                 <Row>
                                     {products.map( product => (
                                         <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
-                                            <Product product={product} />
+                                            <Product product={product} classProp="home-product-img" />
                                         </Col>
                                     ))}
                                 </Row>

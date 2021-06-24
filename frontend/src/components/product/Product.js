@@ -7,13 +7,13 @@ import Rating from './Rating'
 import './css/product.css'
 
 
-function Product({ product }) {
+function Product({ product, classProp }) {
 
     return (
 
         <Card className="my-3 p-3 rounded">
             <Link to={`/product/${product.id}`}>
-                <Card.Img src={product?.image?.file ?? ""} />
+                <Card.Img className={classProp} src={product?.image?.file ?? ""} />
             </Link>
 
             <Card.Body>
