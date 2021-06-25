@@ -27,6 +27,8 @@ function PlaceOrderScreen({ match }) {
     const orderDetails = useSelector( (state) => state.orderDetails )
     const { order, loading, error } = orderDetails
 
+    console.log('ORDER = ', order)
+
     // Get order, success, and error variables from orderCreate, which is part of the state.
     const orderPay = useSelector( (state) => state.orderPay )
     const { loading:loadingPay, success:successPay } = orderPay
@@ -80,7 +82,10 @@ function PlaceOrderScreen({ match }) {
                 }
         }
 
-    }, [dispatch, order, orderId, successPay])
+    }, 
+        [dispatch, order, orderId, successPay]
+        /* [dispatch, successPay] */
+    )
 
 
     const successPaymentHandler = (paymentResult) => {
@@ -120,7 +125,7 @@ function PlaceOrderScreen({ match }) {
 
                             {
                                 order.is_delivered ? (
-                                    <Message variant='success'>Delivered on on {order.delivered_at}</Message>
+                                    <Message variant='success'>Delivered on on {order.delivered_at.substring(0, 10)}</Message>
                                 ) : (
                                     <Message variant='warning'>Not Delivered</Message>
                                 )
@@ -135,7 +140,7 @@ function PlaceOrderScreen({ match }) {
                             </p>
                             {
                                 order.is_paid ? (
-                                    <Message variant='success'>Paid on {order.paid_at}</Message>
+                                    <Message variant='success'>Paid on {order.paid_at.substring(0, 10)}</Message>
                                 ) : (
                                     <Message variant='warning'>Not paid</Message>
                                 )
