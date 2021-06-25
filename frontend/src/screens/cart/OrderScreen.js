@@ -159,7 +159,7 @@ function PlaceOrderScreen({ match }) {
                                                 <ListGroup.Item key={item.id}>
                                                     <Row>
                                                         <Col md={1}>
-                                                            <Image src={ domainURL + item.image } alt={ item.name } fluid rounded />
+                                                            <Image src={  item.image } alt={ item.name } fluid rounded />
                                                         </Col>
 
                                                         <Col>
